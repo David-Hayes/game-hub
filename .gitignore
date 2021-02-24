@@ -11,6 +11,9 @@
 # production
 /build
 
+# processed files for development
+/src/styles/main.css
+
 # misc
 .DS_Store
 .env

@@ -1,10 +1,15 @@
 import { signInWithGoogle } from '../config/firebase.config'
+import { WrapperStandard } from '../components/Layout'
+import { Heading1 } from '../components/Headings'
+import { Button } from '../components/Button'
 
 export const LogIn = () => {
   return (
-    <>
-      <h2>Log in</h2>
-      <button onClick={signInWithGoogle}>Sign in with Google</button>
-    </>
+    <WrapperStandard>
+      <Heading1>Log in</Heading1>
+      <Button type="tertiary" onClick={signInWithGoogle}>
+        Sign in with Google
+      </Button>
+    </WrapperStandard>
   )
 }

@@ -2,9 +2,10 @@ import React, { useContext, useEffect } from 'react'
 import { AppContext } from './state/Store'
 import { auth, createUserProfileDocument } from './config/firebase.config'
 import { LogIn } from './pages/LogIn'
+import { Header } from './components/Header'
 
 const App = () => {
-  const { state, dispatch } = useContext(AppContext)
+  const { dispatch } = useContext(AppContext)
 
   useEffect(() => {
     let unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -14,17 +15,22 @@ const App = () => {
         userRef.onSnapshot((snapShot) => {
           dispatch({
             type: 'SET_USER',
-            payload: { id: snapShot.id, ...snapShot.data() },
+            payload: {
+              id: snapShot.id,
+              ...snapShot.data(),
+              photo: userAuth.photoURL,
+            },
           })
         })
       }
-      dispatch({ type: 'SET_USER', payload: userAuth })
+      //dispatch({ type: 'SET_USER', payload: userAuth })
     })
     return () => unsubscribeFromAuth()
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="App">
+      <Header />
       <LogIn />
     </div>
   )
