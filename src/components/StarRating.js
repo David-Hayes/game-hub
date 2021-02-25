@@ -4,6 +4,20 @@ export const StarRating = ({ readonly = false, preSet = 0, onSetRating }) => {
   const [rating, setRating] = useState(preSet)
   const [tempRating, setTempRating] = useState(preSet)
 
+  const descriptions = [
+    'Unrated',
+    'Abismal',
+    'Terrible',
+    'Very poor',
+    'Poor',
+    'Average',
+    'Good',
+    'Very good',
+    'Amazing',
+    'Outstanding',
+    'Life changing',
+  ]
+
   const handleMouseOver = (newRating) => {
     setTempRating(newRating)
   }
@@ -71,5 +85,9 @@ export const StarRating = ({ readonly = false, preSet = 0, onSetRating }) => {
     return stars
   }
 
-  return <div className="flex">{Stars()}</div>
+  return (
+    <div className="flex">
+      {Stars()} <span className="ml-2">{descriptions[tempRating]}</span>
+    </div>
+  )
 }

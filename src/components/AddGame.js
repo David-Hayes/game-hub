@@ -10,7 +10,7 @@ import { StarRating } from '../components/StarRating'
 export const AddGame = () => {
   const { state, dispatch } = useContext(AppContext)
   const [data, setData] = useState(null)
-  const [rating, setRating] = useState(5)
+  const [rating, setRating] = useState(0)
   const [platforms, setPlatforms] = useState([])
 
   useEffect(() => {

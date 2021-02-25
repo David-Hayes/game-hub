@@ -68,18 +68,6 @@ export const createGameDocument = async (data) => {
   }
 
   return gameRef
-
-  /* firestore
-    .collection('game')
-    .doc(data.id)
-    .set({ name: data.name })
-    .then(() => {
-      console.log('success')
-      return true
-    })
-    .catch((error) => {
-      console.error('Error writing document: ', error)
-    }) */
 }
 
 export const auth = firebase.auth()
