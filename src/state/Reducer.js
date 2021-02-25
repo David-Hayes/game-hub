@@ -5,6 +5,11 @@ export const Reducer = (state, action) => {
         ...state,
         user: action.payload,
       }
+    case 'SET_ADDING':
+      return {
+        ...state,
+        adding: action.payload,
+      }
     default:
       return { ...state }
   }

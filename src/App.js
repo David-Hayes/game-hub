@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { LogIn } from './pages/LogIn'
 import { Search } from './pages/Search'
 import { Header } from './components/Header'
+import { AddGame } from './components/AddGame'
 
 const App = () => {
   const { state, dispatch } = useContext(AppContext)
@@ -44,6 +45,7 @@ const App = () => {
           </Switch>
         </BrowserRouter>
       )}
+      {state.adding && <AddGame />}
     </div>
   )
 }

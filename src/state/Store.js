@@ -3,6 +3,7 @@ import { Reducer } from './Reducer'
 
 const initialState = {
   user: null,
+  adding: null,
 }
 
 const AppContext = createContext(initialState)

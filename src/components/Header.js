@@ -8,7 +8,9 @@ export const Header = () => {
   return (
     <header className="bg-gray-900">
       <div className="max-w-screen-lg mx-auto px-4 py-2 flex items-center justify-between">
-        <div>Game Hub</div>
+        <div>
+          <Link to="/">Game Hub</Link>
+        </div>
         <div className="flex items-center">
           <Link to="/search">
             <svg

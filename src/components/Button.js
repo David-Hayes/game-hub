@@ -6,10 +6,10 @@ export const Button = ({
 }) => {
   const buttonColor =
     type === 'secondary'
-      ? 'bg-gray-200 text-gray-900'
+      ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
       : type === 'tertiary'
-      ? 'bg-green-500 text-gray-900'
-      : 'bg-blue-500 text-white'
+      ? 'bg-green-500 hover:bg-green-700 text-gray-900'
+      : 'bg-blue-600 hover:bg-blue-700 text-white'
   return (
     <button
       {...otherProps}

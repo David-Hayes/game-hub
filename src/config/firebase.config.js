@@ -47,6 +47,38 @@ export const createUserProfileDocument = async (userAuth) => {
   return userRef
 }
 
+export const createGameDocument = async (data) => {
+  if (!data) return
+
+  const gameRef = firestore.doc(`game/${data.id}`)
+  const snapShot = await gameRef.get()
+
+  if (!snapShot.exists) {
+    const { name } = data
+    try {
+      await gameRef.set({
+        name,
+      })
+    } catch (error) {
+      console.log('error creating game', error.message)
+    }
+  }
+
+  return gameRef
+
+  /* firestore
+    .collection('game')
+    .doc(data.id)
+    .set({ name: data.name })
+    .then(() => {
+      console.log('success')
+      return true
+    })
+    .catch((error) => {
+      console.error('Error writing document: ', error)
+    }) */
+}
+
 export const auth = firebase.auth()
 export const firestore = firebase.firestore()
 
