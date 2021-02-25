@@ -5,8 +5,8 @@ import { Button } from '../components/Button'
 
 export const LogIn = () => {
   return (
-    <WrapperStandard>
-      <Heading1>Log in</Heading1>
+    <WrapperStandard topSpace={true}>
+      <Heading1 className="mb-3">Log in</Heading1>
       <Button type="tertiary" onClick={signInWithGoogle}>
         Sign in with Google
       </Button>
