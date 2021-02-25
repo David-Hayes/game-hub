@@ -1,13 +1,13 @@
 export const Button = ({
   children,
-  type = 'primary',
+  styleType = 'primary',
   className,
   ...otherProps
 }) => {
   const buttonColor =
-    type === 'secondary'
+    styleType === 'secondary'
       ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-      : type === 'tertiary'
+      : styleType === 'tertiary'
       ? 'bg-green-500 hover:bg-green-700 text-gray-900'
       : 'bg-blue-600 hover:bg-blue-700 text-white'
   return (

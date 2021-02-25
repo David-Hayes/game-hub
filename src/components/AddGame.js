@@ -11,6 +11,7 @@ export const AddGame = () => {
   const { state, dispatch } = useContext(AppContext)
   const [data, setData] = useState(null)
   const [rating, setRating] = useState(5)
+  const [platforms, setPlatforms] = useState([])
 
   useEffect(() => {
     if (state.adding) {
@@ -31,11 +32,29 @@ export const AddGame = () => {
     const gameData = {
       id: state.adding,
       name: data.name,
+      rating,
+      platforms,
+      cover: data.cover.image_id,
     }
     const gameRef = createGameDocument(gameData)
     gameRef.then((r) => {
       dispatch({ type: 'SET_ADDING', payload: null })
     })
+  }
+
+  const updatePlatforms = (event) => {
+    if (event.target.checked) {
+      if (!platforms.includes(event.target.value)) {
+        setPlatforms([...platforms, event.target.value])
+      }
+    } else {
+      if (platforms.includes(event.target.value)) {
+        const platformIndex = platforms.indexOf(event.target.value)
+        const newPlatforms = platforms
+        newPlatforms.splice(platformIndex, 1)
+        setPlatforms(newPlatforms)
+      }
+    }
   }
 
   return (
@@ -60,13 +79,48 @@ export const AddGame = () => {
             {!data && <Loader />}
             {data && (
               <>
-                <h2>Add {data.name}</h2>
-                <StarRating
-                  preSet={rating}
-                  onSetRating={(newRating) => setRating(newRating)}
-                />
+                <h2 className="mb-2">Add {data.name}</h2>
                 <form onSubmit={submitForm}>
+                  <div className="flex mb-2">
+                    Rating:{' '}
+                    <StarRating
+                      preSet={rating}
+                      onSetRating={(newRating) => setRating(newRating)}
+                    />
+                  </div>
+                  <div className="flex mb-3">
+                    Platform:
+                    <div className="ml-2">
+                      {data.platforms &&
+                        data.platforms.map((platform, index) => (
+                          <div key={index}>
+                            <input
+                              id={platform.abbreviation || platform.name}
+                              type="checkbox"
+                              value={platform.abbreviation || platform.name}
+                              onChange={updatePlatforms}
+                            />
+                            <label
+                              htmlFor={platform.abbreviation || platform.name}
+                              className="ml-1 cursor-pointer"
+                            >
+                              {platform.name}
+                            </label>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
                   <Button type="submit">Save</Button>
+                  <Button
+                    type="button"
+                    styleType="secondary"
+                    className="ml-2"
+                    onClick={() =>
+                      dispatch({ type: 'SET_ADDING', payload: null })
+                    }
+                  >
+                    Cancel
+                  </Button>
                 </form>
               </>
             )}

@@ -54,10 +54,13 @@ export const createGameDocument = async (data) => {
   const snapShot = await gameRef.get()
 
   if (!snapShot.exists) {
-    const { name } = data
+    const { name, rating, cover, platforms } = data
     try {
       await gameRef.set({
         name,
+        rating,
+        cover,
+        platforms,
       })
     } catch (error) {
       console.log('error creating game', error.message)

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export const StarRating = ({ preSet = 0, onSetRating }) => {
+export const StarRating = ({ readonly = false, preSet = 0, onSetRating }) => {
   const [rating, setRating] = useState(preSet)
   const [tempRating, setTempRating] = useState(preSet)
 
