@@ -4,15 +4,15 @@ import { AppContext } from '../state/Store'
 import { WrapperStandard } from '../components/Layout'
 
 export const Profile = () => {
-  const { state, dispatch } = useContext(AppContext)
+  const { state } = useContext(AppContext)
   const [played, setPlayed] = useState([])
   useEffect(() => {
     console.log(1)
     const games = getAllGames(state.user.id)
     games.then((ref) => {
-      setPlayed(...played, ref)
+      setPlayed(ref)
     })
-  }, [])
+  }, [state.user.id])
 
   return (
     <WrapperStandard topSpace={true}>

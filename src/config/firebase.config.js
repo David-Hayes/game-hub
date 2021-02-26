@@ -72,7 +72,7 @@ export const createGameDocument = async (userID, data) => {
 
 export const getAllGames = async (userID, statAfter = '') => {
   const gamesData = []
-  const gamesRef = await firestore
+  await firestore
     .collection('users')
     .doc(`${userID}`)
     .collection('games')
@@ -83,6 +83,7 @@ export const getAllGames = async (userID, statAfter = '') => {
     .then((snapshot) => {
       snapshot.docs.map((doc) => {
         gamesData.push({ id: doc.id, ...doc.data() })
+        return true
       })
     })
   return gamesData
