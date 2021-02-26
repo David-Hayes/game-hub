@@ -36,7 +36,7 @@ export const AddGame = () => {
       platforms,
       cover: data.cover.image_id,
     }
-    const gameRef = createGameDocument(gameData)
+    const gameRef = createGameDocument(state.user.id, gameData)
     gameRef.then((r) => {
       dispatch({ type: 'SET_ADDING', payload: null })
     })

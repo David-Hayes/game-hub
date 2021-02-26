@@ -47,10 +47,10 @@ export const createUserProfileDocument = async (userAuth) => {
   return userRef
 }
 
-export const createGameDocument = async (data) => {
+export const createGameDocument = async (userID, data) => {
   if (!data) return
 
-  const gameRef = firestore.doc(`game/${data.id}`)
+  const gameRef = firestore.doc(`users/${userID}/games/${data.id}`)
   const snapShot = await gameRef.get()
 
   if (!snapShot.exists) {
@@ -68,6 +68,24 @@ export const createGameDocument = async (data) => {
   }
 
   return gameRef
+}
+
+export const getAllGames = async (userID, statAfter = '') => {
+  const gamesData = []
+  const gamesRef = await firestore
+    .collection('users')
+    .doc(`${userID}`)
+    .collection('games')
+    .orderBy('name')
+    .startAfter(statAfter)
+    .limit(50)
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.map((doc) => {
+        gamesData.push({ id: doc.id, ...doc.data() })
+      })
+    })
+  return gamesData
 }
 
 export const auth = firebase.auth()

@@ -29,11 +29,13 @@ export const Header = () => {
             </svg>
           </Link>
           {state.user && (
-            <img
-              src={state.user.photo}
-              alt={state.user.displayName}
-              className="rounded-full w-7 ml-3"
-            />
+            <Link to="/profile">
+              <img
+                src={state.user.photo}
+                alt={state.user.displayName}
+                className="rounded-full w-7 ml-3"
+              />
+            </Link>
           )}
         </div>
       </div>

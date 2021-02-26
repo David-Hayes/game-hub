@@ -4,12 +4,14 @@ import { auth, createUserProfileDocument } from './config/firebase.config'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { LogIn } from './pages/LogIn'
 import { Search } from './pages/Search'
+import { Game } from './pages/Game'
+import { Profile } from './pages/Profile'
 import { Header } from './components/Header'
 import { AddGame } from './components/AddGame'
 
 const App = () => {
   const { state, dispatch } = useContext(AppContext)
-
+  console.log(state)
   useEffect(() => {
     let unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
@@ -42,6 +44,8 @@ const App = () => {
           <Header />
           <Switch>
             <Route path={['/search/:query', '/search']} component={Search} />
+            <Route path="/game/:id" component={Game} />
+            <Route path="/" component={Profile} exact />
           </Switch>
         </BrowserRouter>
       )}

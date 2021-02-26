@@ -8,13 +8,13 @@ export const StarRating = ({ readonly = false, preSet = 0, onSetRating }) => {
     'Unrated',
     'Abismal',
     'Terrible',
-    'Very poor',
+    'Bad',
     'Poor',
     'Average',
+    'Fair',
     'Good',
-    'Very good',
+    'Great',
     'Amazing',
-    'Outstanding',
     'Life changing',
   ]
 
@@ -34,7 +34,7 @@ export const StarRating = ({ readonly = false, preSet = 0, onSetRating }) => {
   const Stars = () => {
     const stars = []
     for (let i = 1; i < 11; i++) {
-      const offset = i % 2 == 0 ? '-ml-3' : ''
+      const offset = i % 2 === 0 ? '-ml-3' : ''
       let icon = ''
       if (i <= tempRating) {
         icon = (
