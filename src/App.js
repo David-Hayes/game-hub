@@ -1,10 +1,11 @@
 import { useEffect, useContext } from 'react'
 import { AppContext } from './config/State'
 import { auth, createUserProfile } from './config/Firebase'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { Header } from './components/Header'
 import { Loader } from './components/Loader'
 import { Login } from './pages/Login'
+import { Game } from './pages/Game'
 import { Search } from './pages/Search'
 
 const App = () => {
@@ -44,6 +45,8 @@ const App = () => {
         {state.user && (
           <Switch>
             <Route path={['/search/:query', '/search']} component={Search} />
+            <Route path="/game/:id" component={Game} />
+            <Redirect path="/game" to="/search" exact />
           </Switch>
         )}
       </BrowserRouter>
