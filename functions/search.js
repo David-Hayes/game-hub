@@ -56,6 +56,8 @@ exports.handler = async (event, context) => {
     }`,
   }
 
+  console.log(searchQuery)
+
   return axios({
     url: 'https://api.igdb.com/v4/games',
     method: 'POST',
