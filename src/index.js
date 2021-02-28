@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { AppProvider } from './state/Store'
+import { AppProvider } from './config/State'
 import './styles/main.css'
 
 ReactDOM.render(
