@@ -1,9 +1,11 @@
 import { useEffect, useContext } from 'react'
 import { AppContext } from './config/State'
 import { auth, createUserProfile } from './config/Firebase'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Header } from './components/Header'
 import { Loader } from './components/Loader'
 import { Login } from './pages/Login'
+import { Search } from './pages/Search'
 
 const App = () => {
   const { state, dispatch } = useContext(AppContext)
@@ -35,9 +37,16 @@ const App = () => {
 
   return (
     <div className="App">
-      <Header />
-      {state.user === null && <Loader />}
-      {state.user !== null && !state.user && <Login />}
+      <BrowserRouter>
+        <Header />
+        {state.user === null && <Loader />}
+        {state.user !== null && !state.user && <Login />}
+        {state.user && (
+          <Switch>
+            <Route path={['/search/:query', '/search']} component={Search} />
+          </Switch>
+        )}
+      </BrowserRouter>
     </div>
   )
 }
