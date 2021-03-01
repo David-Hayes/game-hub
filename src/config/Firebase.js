@@ -61,3 +61,22 @@ export const createUserProfile = async (userAuth) => {
   }
   return userRef
 }
+
+// search user for played ids
+export const getGameRating = async (user, gameIds) => {
+  if (!user || !gameIds) return
+  const gameIdList = Array.isArray(gameIds) ? gameIds : [gameIds.toString()]
+  const gameData = {}
+  await firestore
+    .collection(`users${REACT_APP_FB_DBSLUG}`)
+    .doc(`${user}`)
+    .collection('games')
+    .where(firebase.firestore.FieldPath.documentId(), 'in', gameIdList)
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.map((doc) => {
+        gameData[doc.id] = doc.data().rating
+      })
+    })
+  return gameData
+}

@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { EP_GAME } from '../config/Endpoints'
+import { getGameRating } from '../config/Firebase'
+import { AppContext } from '../config/State'
 import { Loader } from '../components/Loader'
 import { Heading1 } from '../components/Headings'
 import { Wrapper } from '../components/Layout'
+import { StarRating } from '../components/Rating'
 
 export const Game = (props) => {
+  const { state, dispatch } = useContext(AppContext)
   const [game, setGame] = useState(null)
+  const [rating, setRating] = useState(null)
 
   useEffect(() => {
     axios({
@@ -16,9 +21,13 @@ export const Game = (props) => {
         id: props.match.params.id,
       },
     }).then((response) => {
-      setGame(response.data)
       document.title = `${response.data.name} | Game Hub`
-      console.log(response.data)
+      getGameRating(state.user.id, response.data.id).then((data) => {
+        if (!!data[props.match.params.id]) {
+          setRating(data[props.match.params.id])
+        }
+        setGame(response.data)
+      })
     })
   }, [props.match.params.id])
 
@@ -74,6 +83,31 @@ export const Game = (props) => {
                 </span>
               ))}
             </p>
+            {!rating && (
+              <p className="text-center md:text-left">
+                <button
+                  onClick={() =>
+                    dispatch({ type: 'SET_ADDING', payload: game.id })
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="h-10 hover:text-gray-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </button>
+              </p>
+            )}
+            {rating && <StarRating preSet={rating} readonly />}
           </Wrapper>
         </div>
       )}
