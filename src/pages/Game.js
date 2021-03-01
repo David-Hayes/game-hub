@@ -27,7 +27,6 @@ export const Game = (props) => {
           setRating(data[props.match.params.id])
         }
         setGame(response.data)
-        console.log(response.data.summary)
       })
     })
   }, [props.match.params.id, state.user.id])
@@ -85,7 +84,7 @@ export const Game = (props) => {
                   </span>
                 ))}
               </p>
-              {!rating && (
+              {!rating && state.user.type !== 'read' && (
                 <p className="text-center md:text-left">
                   <button
                     onClick={() =>

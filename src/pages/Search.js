@@ -1,11 +1,13 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
+import { AppContext } from '../config/State'
 import { Link } from 'react-router-dom'
 import { EP_SEARCH } from '../config/Endpoints'
 import { Wrapper } from '../components/Layout'
 import { Loader } from '../components/Loader'
 
 export const Search = (props) => {
+  const { state, dispatch } = useContext(AppContext)
   const [localState, setLocalState] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -153,6 +155,29 @@ export const Search = (props) => {
               className="bg-gray-700 p-4 mb-4 rounded-md flow-root"
               key={index}
             >
+              {state.user.type === 'admin' && (
+                <button
+                  onClick={() =>
+                    dispatch({ type: 'SET_ADDING', payload: game.id })
+                  }
+                  className="float-right"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="h-10 hover:text-gray-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </button>
+              )}
               {game.cover && (
                 <Link to={`/game/${game.id}`}>
                   <img

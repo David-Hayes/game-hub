@@ -62,6 +62,31 @@ export const createUserProfile = async (userAuth) => {
   return userRef
 }
 
+export const createGameDocument = async (userID, data) => {
+  if (!data) return
+
+  const gameRef = firestore.doc(
+    `users${REACT_APP_FB_DBSLUG}/${userID}/games/${data.id}`
+  )
+  const snapShot = await gameRef.get()
+
+  if (!snapShot.exists) {
+    const { name, rating, cover, platforms } = data
+    try {
+      await gameRef.set({
+        name,
+        rating,
+        cover,
+        platforms,
+      })
+    } catch (error) {
+      console.log('error creating game', error.message)
+    }
+  }
+
+  return gameRef
+}
+
 // search user for played ids
 export const getGameRating = async (user, gameIds) => {
   if (!user || !gameIds) return

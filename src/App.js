@@ -4,6 +4,7 @@ import { auth, createUserProfile } from './config/Firebase'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { Header } from './components/Header'
 import { Loader } from './components/Loader'
+import { AddGame } from './components/AddGame'
 import { Login } from './pages/Login'
 import { Game } from './pages/Game'
 import { Search } from './pages/Search'
@@ -49,6 +50,7 @@ const App = () => {
             <Redirect path="/game" to="/search" exact />
           </Switch>
         )}
+        {state.adding && <AddGame />}
       </BrowserRouter>
     </div>
   )
