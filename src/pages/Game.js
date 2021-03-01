@@ -27,6 +27,7 @@ export const Game = (props) => {
           setRating(data[props.match.params.id])
         }
         setGame(response.data)
+        console.log(response.data.summary)
       })
     })
   }, [props.match.params.id, state.user.id])
@@ -111,7 +112,19 @@ export const Game = (props) => {
               {rating && <StarRating preSet={rating} readonly />}
             </Wrapper>
           </div>
-          <Wrapper>{game.summary && <p>{game.summary}</p>}</Wrapper>
+          <Wrapper>
+            {game.summary && (
+              <>
+                {game.summary.split('\n').map((item, key) => {
+                  return (
+                    <p key={key} className="mb-4">
+                      {item}
+                    </p>
+                  )
+                })}
+              </>
+            )}
+          </Wrapper>
         </>
       )}
     </>
