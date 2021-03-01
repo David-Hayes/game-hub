@@ -55,7 +55,7 @@ export const Game = (props) => {
               <img
                 src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
                 alt={game.data}
-                className="rounded-lg shadow-xl mx-auto md:ml-0 md:mr-5 mb-5 mb-0 w-1/2 sm:w-1/3 md:w-auto md:float-left"
+                className="rounded-lg shadow-xl mx-auto md:ml-0 md:mr-5 mb-5 md:mb-0 w-1/2 sm:w-1/3 md:w-auto md:float-left"
               />
             )}
             <Heading1 className="text-center md:text-left">
