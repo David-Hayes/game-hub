@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { EP_GAME } from '../config/Endpoints'
+import { getGameRating } from '../config/Firebase'
+import { AppContext } from '../config/State'
 import { Loader } from '../components/Loader'
-import { WrapperStandard } from '../components/Layout'
-import { AppContext } from '../state/Store'
+import { Heading1 } from '../components/Headings'
+import { Wrapper } from '../components/Layout'
+import { StarRating } from '../components/Rating'
 
 export const Game = (props) => {
-  const { dispatch } = useContext(AppContext)
-  const [data, setData] = useState(null)
+  const { state, dispatch } = useContext(AppContext)
+  const [game, setGame] = useState(null)
+  const [rating, setRating] = useState(null)
 
   useEffect(() => {
     axios({
@@ -17,65 +21,74 @@ export const Game = (props) => {
         id: props.match.params.id,
       },
     }).then((response) => {
-      setData(response.data)
+      document.title = `${response.data.name} | Game Hub`
+      getGameRating(state.user.id, response.data.id).then((data) => {
+        if (!!data[props.match.params.id]) {
+          setRating(data[props.match.params.id])
+        }
+        setGame(response.data)
+      })
     })
-  }, [props.match.params.id])
+  }, [props.match.params.id, state.user.id])
 
   const bgImage =
-    data && data.screenshots
+    game && game.screenshots
       ? `https://images.igdb.com/igdb/image/upload/t_1080p/${
-          data.screenshots[Math.floor(Math.random() * data.screenshots.length)]
+          game.screenshots[Math.floor(Math.random() * game.screenshots.length)]
             .image_id
         }.jpg`
       : ''
 
-  const releaseDate = data
-    ? `${new Date(data.first_release_date * 1000).getDate()} ${new Date(
-        data.first_release_date * 1000
+  const releaseDate = game
+    ? `${new Date(game.first_release_date * 1000).getDate()} ${new Date(
+        game.first_release_date * 1000
       ).toLocaleString('default', { month: 'short' })} ${new Date(
-        data.first_release_date * 1000
+        game.first_release_date * 1000
       ).getFullYear()}`
     : ''
 
   return (
-    <div>
-      {!data && <Loader />}
-      {data && (
+    <>
+      {!game && <Loader />}
+      {game && (
         <>
           <div
-            className="pt-32 md:pt-10"
+            className="pt-32 pb-10 md:pt-10 flow-root"
             style={{
               backgroundImage: `linear-gradient(rgba(7, 18, 36, 0.5), rgba(31, 41, 55, 1)), url(${bgImage})`,
               backgroundPosition: `center center`,
               backgroundSize: `cover`,
             }}
           >
-            <WrapperStandard>
-              <div className="flow-root">
+            <Wrapper>
+              {game.cover && (
                 <img
-                  src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${data.cover.image_id}.jpg`}
-                  alt={data.name}
-                  className="rounded-lg shadow-xl w-3/5 mx-auto mb-4 sm:w-1/3 md:mx-0 md:w-auto md:float-left md:mr-6 md:mb-0"
+                  src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
+                  alt={game.data}
+                  className="rounded-lg shadow-xl mx-auto md:ml-0 md:mr-5 mb-5 md:mb-0 w-1/2 sm:w-1/3 md:w-auto md:float-left"
                 />
-                <h1 className="text-4xl font-bold text-center md:text-left mb-3">
-                  {data.name}
-                </h1>
-                <p className="text-sm hidden md:block">
-                  <strong>Release date:</strong> {releaseDate}
-                </p>
-                <p className="text-sm hidden md:block mb-2">
-                  <strong>Platforms:</strong>{' '}
-                  {data.platforms.map((platform, index) => (
-                    <span key={index}>
-                      {index !== 0 && `, `}
-                      {platform.name}
-                    </span>
-                  ))}
-                </p>
+              )}
+              <Heading1 className="text-center md:text-left">
+                {game.name}
+              </Heading1>
+              <p className="text-sm hidden md:block">
+                <strong>Release date:</strong> {releaseDate}
+              </p>
+              <p className="text-sm hidden md:block">
+                <strong>Platforms:</strong>
+                {` `}
+                {game.platforms.map((platform, index) => (
+                  <span key={index}>
+                    {index !== 0 && `, `}
+                    {platform.name}
+                  </span>
+                ))}
+              </p>
+              {!rating && state.user.type !== 'read' && (
                 <p className="text-center md:text-left">
                   <button
                     onClick={() =>
-                      dispatch({ type: 'SET_ADDING', payload: data.id })
+                      dispatch({ type: 'SET_ADDING', payload: game.id })
                     }
                   >
                     <svg
@@ -94,40 +107,25 @@ export const Game = (props) => {
                     </svg>
                   </button>
                 </p>
-              </div>
-            </WrapperStandard>
+              )}
+              {rating && <StarRating preSet={rating} readonly />}
+            </Wrapper>
           </div>
-          <WrapperStandard>
-            <div className="bg-gray-900 p-4 rounded-lg md:hidden">
-              <p className="text-sm">
-                <strong>Release date:</strong> {releaseDate}
-              </p>
-              <p className="text-sm">
-                <strong>Platforms:</strong>{' '}
-                {data.platforms.map((platform, index) => (
-                  <span key={index}>
-                    {index !== 0 && `, `}
-                    {platform.name}
-                  </span>
-                ))}
-              </p>
-            </div>
-            <div className="mb-4">{data.summary}</div>
-            {data.screenshots && (
-              <div className="grid grid-cols-6">
-                {data.screenshots.map((shot, index) => (
-                  <div key={index}>
-                    <img
-                      src={`https://images.igdb.com/igdb/image/upload/t_720p/${shot.image_id}.jpg`}
-                      alt={data.name}
-                    />
-                  </div>
-                ))}
-              </div>
+          <Wrapper>
+            {game.summary && (
+              <>
+                {game.summary.split('\n').map((item, key) => {
+                  return (
+                    <p key={key} className="mb-4">
+                      {item}
+                    </p>
+                  )
+                })}
+              </>
             )}
-          </WrapperStandard>
+          </Wrapper>
         </>
       )}
-    </div>
+    </>
   )
 }

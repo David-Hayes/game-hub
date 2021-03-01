@@ -1,11 +1,11 @@
 import axios from 'axios'
 import React, { useContext, useState, useEffect } from 'react'
-import { AppContext } from '../state/Store'
-import { createGameDocument } from '../config/firebase.config'
+import { AppContext } from '../config/State'
+import { createGameDocument } from '../config/Firebase'
 import { EP_GAME } from '../config/Endpoints'
 import { Loader } from '../components/Loader'
 import { Button } from '../components/Button'
-import { StarRating } from '../components/StarRating'
+import { StarRating } from '../components/Rating'
 
 export const AddGame = () => {
   const { state, dispatch } = useContext(AppContext)
@@ -76,7 +76,7 @@ export const AddGame = () => {
           aria-labelledby="modal-headline"
         >
           <div className="bg-white text-gray-900 px-4 pt-5 pb-5">
-            {!data && <Loader />}
+            {!data && <Loader dark />}
             {data && (
               <>
                 <h2 className="mb-2">Add {data.name}</h2>

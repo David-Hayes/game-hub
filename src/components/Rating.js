@@ -73,10 +73,11 @@ export const StarRating = ({ readonly = false, preSet = 0, onSetRating }) => {
       }
       stars.push(
         <div
-          onMouseOver={() => handleMouseOver(i)}
-          onMouseOut={() => handleMouseOut()}
-          onClick={() => applyRating(i)}
-          className="w-3 overflow-hidden cursor-pointer"
+          key={i}
+          onMouseOver={!readonly ? () => handleMouseOver(i) : undefined}
+          onMouseOut={!readonly ? () => handleMouseOut() : undefined}
+          onClick={!readonly ? () => applyRating(i) : undefined}
+          className={`w-3 overflow-hidden ${!readonly && `cursor-pointer`}`}
         >
           {icon}
         </div>

@@ -1,21 +1,22 @@
-import React, { useContext, useEffect } from 'react'
-import { AppContext } from './state/Store'
-import { auth, createUserProfileDocument } from './config/firebase.config'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { LogIn } from './pages/LogIn'
-import { Search } from './pages/Search'
-import { Game } from './pages/Game'
-import { Profile } from './pages/Profile'
+import { useEffect, useContext } from 'react'
+import { AppContext } from './config/State'
+import { auth, createUserProfile } from './config/Firebase'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { Header } from './components/Header'
+import { Loader } from './components/Loader'
 import { AddGame } from './components/AddGame'
+import { Login } from './pages/Login'
+import { Game } from './pages/Game'
+import { Search } from './pages/Search'
 
 const App = () => {
   const { state, dispatch } = useContext(AppContext)
-  console.log(state)
+
+  // setup user
   useEffect(() => {
     let unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth)
+        const userRef = await createUserProfile(userAuth)
         userRef.onSnapshot((snapShot) => {
           dispatch({
             type: 'SET_USER',
@@ -29,7 +30,7 @@ const App = () => {
       } else {
         dispatch({
           type: 'SET_USER',
-          payload: null,
+          payload: false,
         })
       }
     })
@@ -38,18 +39,19 @@ const App = () => {
 
   return (
     <div className="App">
-      {!state.user && <LogIn />}
-      {state.user && (
-        <BrowserRouter>
-          <Header />
+      <BrowserRouter>
+        <Header />
+        {state.user === null && <Loader />}
+        {state.user !== null && !state.user && <Login />}
+        {state.user && (
           <Switch>
             <Route path={['/search/:query', '/search']} component={Search} />
             <Route path="/game/:id" component={Game} />
-            <Route path="/" component={Profile} exact />
+            <Redirect path="/game" to="/search" exact />
           </Switch>
-        </BrowserRouter>
-      )}
-      {state.adding && <AddGame />}
+        )}
+        {state.adding && <AddGame />}
+      </BrowserRouter>
     </div>
   )
 }

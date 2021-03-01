@@ -1,10 +1,10 @@
 import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
-import { AppContext } from '../state/Store'
-import { WrapperStandard } from '../components/Layout'
-import { Loader } from '../components/Loader'
-import { EP_SEARCH } from '../config/Endpoints'
+import { AppContext } from '../config/State'
 import { Link } from 'react-router-dom'
+import { EP_SEARCH } from '../config/Endpoints'
+import { Wrapper } from '../components/Layout'
+import { Loader } from '../components/Loader'
 
 export const Search = (props) => {
   const { state, dispatch } = useContext(AppContext)
@@ -14,20 +14,23 @@ export const Search = (props) => {
       query: props.match.params.query,
       loading: false,
       results: false,
+      resultsCount: 0,
       pages: 0,
+      page: 1,
+      error: false,
     }
   )
 
   const resultLimit = 20
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
+  const handleForm = (e) => {
+    e.preventDefault()
     window.history.pushState(false, false, '/search/' + localState.query)
     makeSearch()
   }
 
   const makeSearch = (offset = 0) => {
-    setLocalState({ loading: true, results: false })
+    setLocalState({ results: false, error: false, loading: true })
     axios({
       url: EP_SEARCH,
       method: 'POST',
@@ -36,75 +39,126 @@ export const Search = (props) => {
         limit: resultLimit,
         offset,
       },
-    }).then((response) => {
-      if (
-        response.status === 200 &&
-        parseInt(response.headers['x-count']) > 0
-      ) {
-        const pages = Math.ceil(
-          parseInt(response.headers['x-count']) / resultLimit
-        )
-        setLocalState({ results: response.data, pages: pages, loading: false })
-      } else {
-        setLocalState({ results: [], loading: false, pages: 0 })
-      }
     })
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          parseInt(response.headers['x-count']) > 0
+        ) {
+          const pages = Math.ceil(
+            parseInt(response.headers['x-count']) / resultLimit
+          )
+          setLocalState({
+            results: response.data,
+            resultsCount: response.headers['x-count'],
+            pages: pages,
+            page: offset / 20 + 1,
+            loading: false,
+          })
+        } else {
+          setLocalState({
+            results: [],
+            resultsCount: 0,
+            loading: false,
+            pages: 0,
+          })
+        }
+      })
+      .catch((err) => {
+        setLocalState({
+          results: [],
+          resultsCount: 0,
+          error: true,
+          loading: false,
+          pages: 0,
+        })
+      })
   }
 
   return (
-    <WrapperStandard topSpace={true}>
-      <div className="mb-4">
-        <form onSubmit={handleSubmit}>
-          <div className="bg-gray-700 rounded-md relative mx-auto w-min">
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={(e) => setLocalState({ query: e.target.value })}
-              defaultValue={localState.query}
-              className="bg-transparent h-10 px-5 pr-16 focus:outline-none"
-            />
-            <button className="absolute right-0 top-0 mt-3 mr-4">
+    <Wrapper topSpace>
+      <form onSubmit={handleForm} className="mb-4">
+        <div className="bg-gray-700 rounded-md flex items-center relative px-3 mx-auto w-min">
+          <button type="submit" className="mr-2 focus:outline-none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="h-4 w-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
+          <input
+            type="text"
+            placeholder="Search"
+            value={localState.query || ''}
+            onChange={(e) => setLocalState({ query: e.target.value })}
+            className="bg-transparent h-10 focus:outline-none"
+          />
+          {localState.query && (
+            <button
+              type="reset"
+              className="absolute right-3 top-3 z-10 focus:outline-none"
+              onClick={() => setLocalState({ query: '' })}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                viewBox="0 0 20 20"
+                fill="currentColor"
                 className="h-4 w-4"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
                 />
               </svg>
             </button>
-          </div>
-        </form>
-      </div>
+          )}
+        </div>
+      </form>
+      {localState.error && <div>Error making search</div>}
       {localState.loading && <Loader />}
-      {localState.results.length < 1 && <>No results</>}
       {localState.results && (
         <>
           {localState.pages > 1 && (
-            <p className="text-center mb-4">
-              {[...Array(localState.pages)].map((x, i) => (
-                <button
-                  onClick={() => makeSearch(i * resultLimit)}
-                  className="pr-1"
-                  key={i}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </p>
+            <div className="grid md:grid-cols-3 mb-4">
+              <div className="text-center md:text-left">
+                {localState.resultsCount} results
+              </div>
+              <div className="text-center">
+                Pages:{' '}
+                {[...Array(localState.pages)].map((x, i) => (
+                  <button
+                    onClick={() => makeSearch(i * resultLimit)}
+                    className={`pr-1 focus:outline-none ${
+                      i + 1 === localState.page ? `font-bold underline` : ``
+                    }`}
+                    key={i}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+              <div></div>
+            </div>
           )}
-          {localState.results.map((data, index) => (
-            <div key={index} className="bg-gray-700 mb-4 rounded p-4 flow-root">
+          {localState.results.map((game, index) => (
+            <div
+              className="bg-gray-700 p-4 mb-4 rounded-md flow-root"
+              key={index}
+            >
               {state.user.type === 'admin' && (
                 <button
                   onClick={() =>
-                    dispatch({ type: 'SET_ADDING', payload: data.id })
+                    dispatch({ type: 'SET_ADDING', payload: game.id })
                   }
                   className="float-right"
                 >
@@ -124,27 +178,29 @@ export const Search = (props) => {
                   </svg>
                 </button>
               )}
-              {data.cover && (
-                <Link to={`/game/${data.id}`}>
+              {game.cover && (
+                <Link to={`/game/${game.id}`}>
                   <img
-                    src={`https://images.igdb.com/igdb/image/upload/t_cover_small/${data.cover.image_id}.jpg`}
-                    alt={data.name}
+                    src={`https://images.igdb.com/igdb/image/upload/t_cover_small/${game.cover.image_id}.jpg`}
+                    alt={game.name}
                     className="float-left mr-4 rounded-md"
                   />
                 </Link>
               )}
-              <h2 className="text-lg leading-6 mb-1">
-                <Link to={`/game/${data.id}`} className="hover:underline">
-                  {data.name}
-                </Link>
+              <h2>
+                <Link to={`/game/${game.id}`}>{game.name}</Link>
               </h2>
-              {data.first_release_date
-                ? `(${new Date(data.first_release_date * 1000).getFullYear()})`
-                : ``}
+              <p>
+                {game.first_release_date
+                  ? `(${new Date(
+                      game.first_release_date * 1000
+                    ).getFullYear()})`
+                  : ``}
+              </p>
             </div>
           ))}
         </>
       )}
-    </WrapperStandard>
+    </Wrapper>
   )
 }
