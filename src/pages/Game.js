@@ -29,7 +29,7 @@ export const Game = (props) => {
         setGame(response.data)
       })
     })
-  }, [props.match.params.id])
+  }, [props.match.params.id, state.user.id])
 
   const bgImage =
     game && game.screenshots
@@ -51,65 +51,68 @@ export const Game = (props) => {
     <>
       {!game && <Loader />}
       {game && (
-        <div
-          className="pt-32 pb-10 md:pt-10 flow-root"
-          style={{
-            backgroundImage: `linear-gradient(rgba(7, 18, 36, 0.5), rgba(31, 41, 55, 1)), url(${bgImage})`,
-            backgroundPosition: `center center`,
-            backgroundSize: `cover`,
-          }}
-        >
-          <Wrapper>
-            {game.cover && (
-              <img
-                src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
-                alt={game.data}
-                className="rounded-lg shadow-xl mx-auto md:ml-0 md:mr-5 mb-5 md:mb-0 w-1/2 sm:w-1/3 md:w-auto md:float-left"
-              />
-            )}
-            <Heading1 className="text-center md:text-left">
-              {game.name}
-            </Heading1>
-            <p className="text-sm hidden md:block">
-              <strong>Release date:</strong> {releaseDate}
-            </p>
-            <p className="text-sm hidden md:block">
-              <strong>Platforms:</strong>
-              {` `}
-              {game.platforms.map((platform, index) => (
-                <span key={index}>
-                  {index !== 0 && `, `}
-                  {platform.name}
-                </span>
-              ))}
-            </p>
-            {!rating && (
-              <p className="text-center md:text-left">
-                <button
-                  onClick={() =>
-                    dispatch({ type: 'SET_ADDING', payload: game.id })
-                  }
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="h-10 hover:text-gray-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </button>
+        <>
+          <div
+            className="pt-32 pb-10 md:pt-10 flow-root"
+            style={{
+              backgroundImage: `linear-gradient(rgba(7, 18, 36, 0.5), rgba(31, 41, 55, 1)), url(${bgImage})`,
+              backgroundPosition: `center center`,
+              backgroundSize: `cover`,
+            }}
+          >
+            <Wrapper>
+              {game.cover && (
+                <img
+                  src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
+                  alt={game.data}
+                  className="rounded-lg shadow-xl mx-auto md:ml-0 md:mr-5 mb-5 md:mb-0 w-1/2 sm:w-1/3 md:w-auto md:float-left"
+                />
+              )}
+              <Heading1 className="text-center md:text-left">
+                {game.name}
+              </Heading1>
+              <p className="text-sm hidden md:block">
+                <strong>Release date:</strong> {releaseDate}
               </p>
-            )}
-            {rating && <StarRating preSet={rating} readonly />}
-          </Wrapper>
-        </div>
+              <p className="text-sm hidden md:block">
+                <strong>Platforms:</strong>
+                {` `}
+                {game.platforms.map((platform, index) => (
+                  <span key={index}>
+                    {index !== 0 && `, `}
+                    {platform.name}
+                  </span>
+                ))}
+              </p>
+              {!rating && (
+                <p className="text-center md:text-left">
+                  <button
+                    onClick={() =>
+                      dispatch({ type: 'SET_ADDING', payload: game.id })
+                    }
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      className="h-10 hover:text-gray-400"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </button>
+                </p>
+              )}
+              {rating && <StarRating preSet={rating} readonly />}
+            </Wrapper>
+          </div>
+          <Wrapper>{game.summary && <p>{game.summary}</p>}</Wrapper>
+        </>
       )}
     </>
   )

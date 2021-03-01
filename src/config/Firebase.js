@@ -76,6 +76,7 @@ export const getGameRating = async (user, gameIds) => {
     .then((snapshot) => {
       snapshot.docs.map((doc) => {
         gameData[doc.id] = doc.data().rating
+        return true
       })
     })
   return gameData

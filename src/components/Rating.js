@@ -73,6 +73,7 @@ export const StarRating = ({ readonly = false, preSet = 0, onSetRating }) => {
       }
       stars.push(
         <div
+          key={i}
           onMouseOver={!readonly ? () => handleMouseOver(i) : undefined}
           onMouseOut={!readonly ? () => handleMouseOut() : undefined}
           onClick={!readonly ? () => applyRating(i) : undefined}
