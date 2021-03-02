@@ -77,12 +77,13 @@ export const Game = (props) => {
               <p className="text-sm hidden md:block">
                 <strong>Platforms:</strong>
                 {` `}
-                {game.platforms.map((platform, index) => (
-                  <span key={index}>
-                    {index !== 0 && `, `}
-                    {platform.name}
-                  </span>
-                ))}
+                {game.platforms &&
+                  game.platforms.map((platform, index) => (
+                    <span key={index}>
+                      {index !== 0 && `, `}
+                      {platform.name}
+                    </span>
+                  ))}
               </p>
               {!rating && state.user.type !== 'read' && (
                 <p className="text-center md:text-left">

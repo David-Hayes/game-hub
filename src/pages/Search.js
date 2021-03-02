@@ -178,15 +178,17 @@ export const Search = (props) => {
                   </svg>
                 </button>
               )}
-              {game.cover && (
-                <Link to={`/game/${game.id}`}>
-                  <img
-                    src={`https://images.igdb.com/igdb/image/upload/t_cover_small/${game.cover.image_id}.jpg`}
-                    alt={game.name}
-                    className="float-left mr-4 rounded-md"
-                  />
-                </Link>
-              )}
+
+              <Link to={`/game/${game.id}`}>
+                <img
+                  src={`https://images.igdb.com/igdb/image/upload/t_cover_small/${
+                    game.cover ? game.cover.image_id : `nocover_qhhlj6`
+                  }.jpg`}
+                  alt={game.name}
+                  className="float-left mr-4 rounded-md"
+                />
+              </Link>
+
               <h2>
                 <Link to={`/game/${game.id}`}>{game.name}</Link>
               </h2>

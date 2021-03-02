@@ -34,7 +34,7 @@ export const AddGame = () => {
       name: data.name,
       rating,
       platforms,
-      cover: data.cover.image_id,
+      cover: data.cover ? data.cover.image_id : 'nocover_qhhlj6',
     }
     const gameRef = createGameDocument(state.user.id, gameData)
     gameRef.then((r) => {

@@ -8,7 +8,9 @@ export const Header = () => {
   return (
     <div className="bg-gray-900 py-2">
       <Wrapper className="flex items-center justify-between">
-        <div>Game hub</div>
+        <div>
+          <Link to="/">Game hub</Link>
+        </div>
         {state.user && (
           <div className="flex items-center">
             <Link to="/search">

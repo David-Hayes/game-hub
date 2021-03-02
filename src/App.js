@@ -6,6 +6,7 @@ import { Header } from './components/Header'
 import { Loader } from './components/Loader'
 import { AddGame } from './components/AddGame'
 import { Login } from './pages/Login'
+import { Profile } from './pages/Profile'
 import { Game } from './pages/Game'
 import { Search } from './pages/Search'
 
@@ -48,6 +49,7 @@ const App = () => {
             <Route path={['/search/:query', '/search']} component={Search} />
             <Route path="/game/:id" component={Game} />
             <Redirect path="/game" to="/search" exact />
+            <Route path="/" component={Profile} exact />
           </Switch>
         )}
         {state.adding && <AddGame />}
