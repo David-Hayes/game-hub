@@ -106,3 +106,24 @@ export const getGameRating = async (user, gameIds) => {
     })
   return gameData
 }
+
+// get all games
+export const getAllGames = async (user, statAfter = '') => {
+  if (!user) return
+  const gamesData = []
+  await firestore
+    .collection(`users${REACT_APP_FB_DBSLUG}`)
+    .doc(`${user}`)
+    .collection('games')
+    .orderBy('name')
+    .startAfter(statAfter)
+    .limit(100)
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.map((doc) => {
+        gamesData.push({ id: doc.id, ...doc.data() })
+        return true
+      })
+    })
+  return gamesData
+}
