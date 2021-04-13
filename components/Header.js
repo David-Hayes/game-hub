@@ -1,6 +1,8 @@
 import Link from 'next/link'
+import { useAuth } from '../libs/Auth'
 
 const Header = () => {
+  const { user } = useAuth()
   return (
     <header className="bg-gray-900 text-white">
       <nav className="max-w-screen-lg mx-auto px-4 py-3 flex justify-between">
@@ -12,7 +14,11 @@ const Header = () => {
           </Link>
         </div>
         <div>
-          <Link href="/profile">User</Link>
+          {user ? (
+            <>
+              <Link href="/profile">{user.name}</Link>
+            </>
+          ) : null}
         </div>
       </nav>
     </header>
