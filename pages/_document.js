@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Header from '../components/Header'
 
 class AppDocument extends Document {
   static async getInitialProps(ctx) {
@@ -10,15 +11,19 @@ class AppDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta name="robots" content="noindex" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap"
             rel="stylesheet"
           />
         </Head>
-        <body className="bg-gray-800 text-white">
-          <Main />
-          <NextScript />
+        <body className="bg-gray-200">
+          <Header />
+          <div className="max-w-screen-lg mx-auto px-4">
+            <Main />
+            <NextScript />
+          </div>
         </body>
       </Html>
     )
