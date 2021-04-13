@@ -6,9 +6,7 @@ function App({ Component, pageProps }) {
   return (
     <AuthProvider>
       <Header />
-      <div className="max-w-screen-lg mx-auto px-4">
-        <Component {...pageProps} />
-      </div>
+      <Component {...pageProps} />
     </AuthProvider>
   )
 }
