@@ -19,11 +19,8 @@ class AppDocument extends Document {
           />
         </Head>
         <body className="bg-gray-200">
-          <Header />
-          <div className="max-w-screen-lg mx-auto px-4">
-            <Main />
-            <NextScript />
-          </div>
+          <Main />
+          <NextScript />
         </body>
       </Html>
     )
