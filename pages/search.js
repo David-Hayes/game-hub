@@ -41,7 +41,7 @@ const Search = () => {
             onChange={(e) => setLocalState({ query: e.target.value })}
             className="py-2 px-3"
           />
-          <button>
+          <button type="submit" className="px-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
