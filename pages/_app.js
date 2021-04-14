@@ -5,7 +5,6 @@ import Header from '../components/Header'
 function App({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <Header />
       <Component {...pageProps} />
     </AuthProvider>
   )

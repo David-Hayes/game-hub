@@ -20,7 +20,20 @@ function useFirebaseAuth() {
     if (rawUser) {
       const user = await formatUser(rawUser)
       setUser(user)
+      setLoading(false)
+      return user
+    } else {
+      setUser(false)
+      setLoading(false)
+      return false
     }
+  }
+
+  const signout = () => {
+    return firebase
+      .auth()
+      .signOut()
+      .then(() => handleUser(false))
   }
 
   useEffect(() => {
@@ -31,6 +44,7 @@ function useFirebaseAuth() {
   return {
     user,
     loading,
+    signout,
   }
 }
 

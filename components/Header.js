@@ -13,12 +13,22 @@ const Header = () => {
             </a>
           </Link>
         </div>
-        <div>
+        <div className="text-sm">
           {user ? (
-            <>
-              <Link href="/profile">{user.name}</Link>
-            </>
-          ) : null}
+            <Link href="/profile">
+              <a>
+                <img
+                  src={user.photoUrl}
+                  alt={user.name}
+                  className="rounded-full w-8"
+                />
+              </a>
+            </Link>
+          ) : (
+            <Link href="/profile">
+              <a>Log in</a>
+            </Link>
+          )}
         </div>
       </nav>
     </header>

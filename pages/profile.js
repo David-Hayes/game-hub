@@ -1,15 +1,18 @@
 import { useAuth } from '../libs/Auth'
 import PageShell from '../components/PageShell'
 import { H1 } from '../components/Headings'
+import Button from '../components/Button'
 
 const Profile = () => {
-  const { user } = useAuth()
+  const { user, signout } = useAuth()
 
   return (
     <>
       {user ? (
         <PageShell>
-          <H1>Profile</H1>
+          <img src={user.photoUrl} alt={user.name} />
+          <H1>{user.name}</H1>
+          <Button onClick={signout}>Log out</Button>
         </PageShell>
       ) : null}
     </>
