@@ -1,14 +1,21 @@
 import { useAuth } from '../libs/Auth'
+import LogIn from './LogIn'
 import Header from './Header'
 
 const PageShell = ({ children }) => {
-  const { user } = useAuth()
+  const { user, authLoading } = useAuth()
   return (
     <>
-      {user ? (
+      {!authLoading ? (
         <>
-          <Header />
-          <div className="max-w-screen-lg mx-auto px-4">{children}</div>
+          {user ? (
+            <>
+              <Header />
+              <div className="max-w-screen-lg mx-auto px-4">{children}</div>
+            </>
+          ) : (
+            <LogIn />
+          )}
         </>
       ) : null}
     </>

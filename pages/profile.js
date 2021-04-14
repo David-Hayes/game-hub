@@ -7,15 +7,15 @@ const Profile = () => {
   const { user, signout } = useAuth()
 
   return (
-    <>
+    <PageShell>
       {user ? (
-        <PageShell>
+        <>
           <img src={user.photoUrl} alt={user.name} />
           <H1>{user.name}</H1>
           <Button onClick={signout}>Log out</Button>
-        </PageShell>
+        </>
       ) : null}
-    </>
+    </PageShell>
   )
 }
 

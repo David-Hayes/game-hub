@@ -24,11 +24,7 @@ const Header = () => {
                 />
               </a>
             </Link>
-          ) : (
-            <Link href="/profile">
-              <a>Log in</a>
-            </Link>
-          )}
+          ) : null}
         </div>
       </nav>
     </header>

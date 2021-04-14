@@ -14,19 +14,29 @@ export const useAuth = () => {
 
 function useFirebaseAuth() {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [authLoading, setAuthLoading] = useState(true)
 
   const handleUser = async (rawUser) => {
     if (rawUser) {
       const user = await formatUser(rawUser)
       setUser(user)
-      setLoading(false)
+      setAuthLoading(false)
       return user
     } else {
       setUser(false)
-      setLoading(false)
+      setAuthLoading(false)
       return false
     }
+  }
+
+  const signinWithGoogle = () => {
+    setAuthLoading(true)
+    return firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((response) => {
+        handleUser(response.user)
+      })
   }
 
   const signout = () => {
@@ -43,7 +53,8 @@ function useFirebaseAuth() {
 
   return {
     user,
-    loading,
+    authLoading,
+    signinWithGoogle,
     signout,
   }
 }

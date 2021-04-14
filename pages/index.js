@@ -1,5 +1,7 @@
+import PageShell from '../components/PageShell'
+
 const Home = () => {
-  return <div>Homepage</div>
+  return <PageShell>Homepage</PageShell>
 }
 
 export default Home
