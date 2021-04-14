@@ -7,7 +7,7 @@ const Profile = () => {
   const { user, signout } = useAuth()
 
   return (
-    <PageShell>
+    <PageShell title="Profile">
       {user ? (
         <>
           <img src={user.photoUrl} alt={user.name} />

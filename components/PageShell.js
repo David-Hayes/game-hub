@@ -1,11 +1,15 @@
+import Head from 'next/head'
 import { useAuth } from '../libs/Auth'
 import LogIn from './LogIn'
 import Header from './Header'
 
-const PageShell = ({ children }) => {
+const PageShell = ({ children, title }) => {
   const { user, authLoading } = useAuth()
   return (
     <>
+      <Head>
+        <title>{title ? `${title} | Gamehub` : `Gamehub`}</title>
+      </Head>
       {!authLoading ? (
         <>
           {user ? (
