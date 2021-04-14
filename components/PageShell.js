@@ -5,6 +5,7 @@ import Header from './Header'
 
 const PageShell = ({ children, title }) => {
   const { user, authLoading } = useAuth()
+
   return (
     <>
       <Head>
