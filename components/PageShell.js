@@ -3,7 +3,7 @@ import { useAuth } from '../libs/Auth'
 import LogIn from './LogIn'
 import Header from './Header'
 
-const PageShell = ({ children, title }) => {
+const PageShell = ({ children, title, bunched = false }) => {
   const { user, authLoading } = useAuth()
 
   return (
@@ -16,7 +16,13 @@ const PageShell = ({ children, title }) => {
           {user ? (
             <>
               <Header />
-              <div className="max-w-screen-lg mx-auto px-4">{children}</div>
+              <div
+                className={`max-w-screen-lg mx-auto px-4 ${
+                  !bunched ? 'mt-5' : ''
+                }`}
+              >
+                {children}
+              </div>
             </>
           ) : (
             <LogIn />
