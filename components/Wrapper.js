@@ -9,11 +9,17 @@ const Wrapper = ({ children, fullWidth = false }) => {
   return (
     <>
       <Header />
-      {user ? (
-        <>{fullWidth ? <>{children}</> : <Container>{children}</Container>}</>
-      ) : (
-        <SignIn />
-      )}
+      {!authLoading ? (
+        <>
+          {user ? (
+            <>
+              {fullWidth ? <>{children}</> : <Container>{children}</Container>}
+            </>
+          ) : (
+            <SignIn />
+          )}
+        </>
+      ) : null}
     </>
   )
 }
