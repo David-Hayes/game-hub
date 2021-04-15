@@ -3,8 +3,8 @@
 ## Must
 - [ ] Header
 - [ ] Footer
-- [ ] Firebase
-  - [ ] Firebase keys and envs
+- [ ] Firebase config
+  - [x] Firebase keys and envs
 - [ ] Firebase auth
 - [ ] Log in page
 - [ ] Log out flow
