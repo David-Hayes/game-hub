@@ -8,7 +8,7 @@
 - [x] Firebase auth
 - [x] Log in page
 - [ ] Log out flow
-- [ ] Firebase firestore
+- [x] Firebase firestore for users
 - [ ] IGDB env Keys
 - [ ] Functions
   - [ ] Token

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from './Firebase'
+import { createUser } from './Firestore'
 
 const authContext = createContext()
 
@@ -19,6 +20,7 @@ function useFirebaseAuth() {
   const handleUser = async (rawUser) => {
     if (rawUser) {
       const user = await formatUser(rawUser)
+      createUser(user.uid, { name: user.name })
       setUser(user)
       setAuthLoading(false)
       return user
