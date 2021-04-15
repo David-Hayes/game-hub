@@ -3,10 +3,10 @@
 ## Must
 - [ ] Header
 - [ ] Footer
-- [ ] Firebase config
+- [x] Firebase config
   - [x] Firebase keys and envs
-- [ ] Firebase auth
-- [ ] Log in page
+- [x] Firebase auth
+- [x] Log in page
 - [ ] Log out flow
 - [ ] Firebase firestore
 - [ ] IGDB env Keys
