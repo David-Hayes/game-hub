@@ -1,5 +1,5 @@
 import Wrapper from '../components/Wrapper'
 
 export default function Home() {
-  return <Wrapper>Gamehub</Wrapper>
+  return <Wrapper title="Gamehub">Gamehub</Wrapper>
 }
