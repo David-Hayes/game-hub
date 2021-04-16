@@ -13,9 +13,9 @@
 - [ ] 404 page
 - [ ] IGDB env Keys
 - [ ] Functions
-  - [ ] Token
-  - [ ] Search
-  - [ ] Game
+  - [x] Token
+  - [x] Search
+  - [x] Game
 - [ ] Search page
   - [ ] Pagination
 - [ ] Profile page
