@@ -9,6 +9,8 @@
 - [x] Log in page
 - [ ] Log out flow
 - [x] Firebase firestore for users
+- [ ] Loading icon
+- [ ] 404 page
 - [ ] IGDB env Keys
 - [ ] Functions
   - [ ] Token

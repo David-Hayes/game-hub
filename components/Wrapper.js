@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Header from './Header'
 import Container from './Container'
 import SignIn from './SignIn'
+import Loading from './Loading'
 import { useAuth } from '../libs/Auth'
 
 const Wrapper = ({ children, title, fullWidth = false }) => {
@@ -23,7 +24,9 @@ const Wrapper = ({ children, title, fullWidth = false }) => {
             <SignIn />
           )}
         </>
-      ) : null}
+      ) : (
+        <Loading />
+      )}
     </>
   )
 }
