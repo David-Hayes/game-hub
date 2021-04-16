@@ -11,8 +11,8 @@
 - [x] Firebase firestore for users
 - [ ] Loading icon
 - [ ] 404 page
-- [ ] IGDB env Keys
-- [ ] Functions
+- [x] IGDB env Keys
+- [x] Functions
   - [x] Token
   - [x] Search
   - [x] Game
