@@ -21,7 +21,7 @@ const Search = () => {
   }
 
   const handleSearch = (offset = 0, limit = 25) => {
-    setLocalState({ loading: true })
+    setLocalState({ loading: true, results: false })
     axios({
       url: ep_search,
       method: 'POST',
@@ -48,7 +48,7 @@ const Search = () => {
   return (
     <Wrapper title="Search">
       <form onSubmit={handleFormSubmit}>
-        <div className="w-min mx-auto flex shadow-md bg-white rounded-md">
+        <div className="w-min mx-auto flex shadow-md bg-white rounded-md mb-5">
           <input
             type="text"
             className="rounded-tl-md rounded-bl-md w-56 px-3"
@@ -94,7 +94,7 @@ const Search = () => {
                       alt={game.name}
                     />
                     <div className="pt-2 px-3 pb-4">
-                      <p className="text-sm">{game.name}</p>
+                      <p className="text-sm mb-2 leading-tight">{game.name}</p>
                       {game.first_release_date ? (
                         <p className="text-xs">
                           (
@@ -105,8 +105,11 @@ const Search = () => {
                         </p>
                       ) : null}
                     </div>
-                    <Link href="">
-                      <a></a>
+                    <Link href={`/game/${game.id}`}>
+                      <a
+                        className="absolute top-0 left-0 w-full h-full"
+                        title={game.name}
+                      ></a>
                     </Link>
                   </div>
                 ))}

@@ -17,6 +17,7 @@
   - [ ] Search
   - [ ] Game
 - [ ] Search page
+  - [ ] Pagination
 - [ ] Profile page
 - [ ] Game page
 - [ ] Add functionality
