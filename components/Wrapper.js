@@ -5,7 +5,7 @@ import SignIn from './SignIn'
 import Loading from './Loading'
 import { useAuth } from '../libs/Auth'
 
-const Wrapper = ({ children, title, fullWidth = false }) => {
+const Wrapper = ({ children, title, fullWidth = false, bunched = false }) => {
   const { user, authLoading } = useAuth()
 
   return (
@@ -18,7 +18,13 @@ const Wrapper = ({ children, title, fullWidth = false }) => {
         <>
           {user ? (
             <>
-              {fullWidth ? <>{children}</> : <Container>{children}</Container>}
+              {fullWidth ? (
+                <>{children}</>
+              ) : (
+                <Container className={!bunched ? 'mt-5' : ''}>
+                  {children}
+                </Container>
+              )}
             </>
           ) : (
             <SignIn />

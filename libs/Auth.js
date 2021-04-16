@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from './Firebase'
 import { createUser } from './Firestore'
+import { ep_token } from './Endpoints'
 
 const authContext = createContext()
 
@@ -20,6 +21,7 @@ function useFirebaseAuth() {
   const handleUser = async (rawUser) => {
     if (rawUser) {
       const user = await formatUser(rawUser)
+      await fetchToken()
       createUser(user.uid, { name: user.name })
       setUser(user)
       setAuthLoading(false)
@@ -68,5 +70,19 @@ const formatUser = async (user) => {
     name: user.displayName,
     provider: user.providerData[0].providerId,
     photoUrl: user.photoURL,
+  }
+}
+
+const fetchToken = async () => {
+  if (document.cookie.indexOf('gDBTF') < 0) {
+    await fetch(ep_token).then((res) => {
+      if (res.status === 200) {
+        return true
+      } else {
+        return false
+      }
+    })
+  } else {
+    return true
   }
 }
