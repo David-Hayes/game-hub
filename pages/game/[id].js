@@ -6,6 +6,7 @@ import { ep_game } from '../../libs/Endpoints'
 import Wrapper from '../../components/Wrapper'
 import Loading from '../../components/Loading'
 import Container from '../../components/Container'
+import { H2 } from '../../components/Headings'
 
 const Game = () => {
   const { query } = useRouter()
@@ -33,6 +34,19 @@ const Game = () => {
         }.jpg`
       : ''
 
+  const releaseDate = (releaseDate) => {
+    const rD = new Date(releaseDate * 1000)
+    return (
+      <>
+        <strong>Released:</strong> {rD.getDate()}{' '}
+        {rD.toLocaleString('default', {
+          month: 'long',
+        })}{' '}
+        {rD.getFullYear()}
+      </>
+    )
+  }
+
   return (
     <Wrapper fullWidth={true}>
       {game ? (
@@ -41,9 +55,9 @@ const Game = () => {
             <title>{game.name}</title>
           </Head>
           <div
-            className="py-8"
+            className="py-8 mb-5"
             style={{
-              backgroundImage: `linear-gradient(rgba(7, 18, 36, 0.5), rgba(31, 41, 55, 1)), url(${bgImage})`,
+              backgroundImage: `linear-gradient(rgba(7, 18, 36, 0.6), rgba(31, 41, 55, 1)), url(${bgImage})`,
               backgroundPosition: `center center`,
               backgroundSize: `cover`,
             }}
@@ -59,14 +73,47 @@ const Game = () => {
                     className="shadow-md"
                   />
                 </div>
-                <div>
-                  <h1 className="text-5xl text-white font-semibold">
-                    {game.name}
-                  </h1>
+                <div className="text-white">
+                  <h1 className="text-5xl font-semibold mb-2">{game.name}</h1>
+                  {game.first_release_date &&
+                    releaseDate(game.first_release_date)}
                 </div>
               </div>
             </Container>
           </div>
+          <Container>
+            <div className="grid md:grid-cols-3 gap-5">
+              <div className="col-span-2">
+                {game.summary && (
+                  <>
+                    <H2>Overview</H2>
+                    {game.summary.split('\n').map((item, key) => {
+                      return (
+                        <p key={key} className="mb-4">
+                          {item}
+                        </p>
+                      )
+                    })}
+                  </>
+                )}
+              </div>
+              <div>
+                <div className="bg-gray-100 p-6 rounded-md shadow-md">
+                  {game.platforms && (
+                    <>
+                      <H2>Platform(s)</H2>
+                      {game.platforms.map((platform, index) => (
+                        <span key={index}>
+                          {index !== 0 && `, `}
+                          {platform.name}
+                        </span>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Container>
         </>
       ) : (
         <div className="mt-5">
