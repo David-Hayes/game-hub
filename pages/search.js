@@ -105,7 +105,7 @@ const Search = () => {
                         </p>
                       ) : null}
                     </div>
-                    <Link href={`/game/${game.id}`}>
+                    <Link href={`/game/${game.slug}`}>
                       <a
                         className="absolute top-0 left-0 w-full h-full"
                         title={game.name}

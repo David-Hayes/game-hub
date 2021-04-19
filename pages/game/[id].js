@@ -7,6 +7,7 @@ import Wrapper from '../../components/Wrapper'
 import Loading from '../../components/Loading'
 import Container from '../../components/Container'
 import { H2 } from '../../components/Headings'
+import Card from '../../components/Card'
 
 const Game = () => {
   const { query } = useRouter()
@@ -47,6 +48,10 @@ const Game = () => {
     )
   }
 
+  const tableCellClasses = 'w-1/2 align-top py-2'
+
+  //console.log(game.summary.split('\n'))
+
   return (
     <Wrapper fullWidth={true}>
       {game ? (
@@ -83,35 +88,69 @@ const Game = () => {
           </div>
           <Container>
             <div className="grid md:grid-cols-3 gap-5">
-              <div className="col-span-2">
-                {game.summary && (
+              <main className="col-span-2">
+                {(game.summary || game.storyline) && (
                   <>
                     <H2>Overview</H2>
-                    {game.summary.split('\n').map((item, key) => {
-                      return (
-                        <p key={key} className="mb-4">
-                          {item}
-                        </p>
-                      )
-                    })}
+                    {game.summary &&
+                      game.summary.split('\n').map((item, key) => {
+                        return (
+                          <p key={key} className="mb-4">
+                            {item}
+                          </p>
+                        )
+                      })}
+                    {game.storyline &&
+                      game.storyline.split('\n').map((item, key) => {
+                        return (
+                          <p key={key} className="mb-4">
+                            {item}
+                          </p>
+                        )
+                      })}
                   </>
                 )}
-              </div>
-              <div>
-                <div className="bg-gray-100 p-6 rounded-md shadow-md">
-                  {game.platforms && (
-                    <>
-                      <H2>Platform(s)</H2>
-                      {game.platforms.map((platform, index) => (
-                        <span key={index}>
-                          {index !== 0 && `, `}
-                          {platform.name}
-                        </span>
-                      ))}
-                    </>
-                  )}
-                </div>
-              </div>
+              </main>
+              <aside>
+                <Card className="bg-gray-100 p-6 rounded-md shadow-md text-sm">
+                  <table className="table-fixed">
+                    <tbody>
+                      {game.platforms && (
+                        <tr>
+                          <td className={tableCellClasses}>Platforms</td>
+                          <td className={tableCellClasses}>
+                            {game.platforms.map((platform, index) => (
+                              <span key={index} className="block">
+                                {platform.name}
+                              </span>
+                            ))}
+                          </td>
+                        </tr>
+                      )}
+                      {game.collection && (
+                        <tr>
+                          <td className={tableCellClasses}>Franchises</td>
+                          <td className={tableCellClasses}>
+                            {game.collection.name}
+                          </td>
+                        </tr>
+                      )}
+                      {game.genres && (
+                        <tr>
+                          <td className={tableCellClasses}>Genres</td>
+                          <td className={tableCellClasses}>
+                            {game.genres.map((genre, index) => (
+                              <span key={index} className="block">
+                                {genre.name}
+                              </span>
+                            ))}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </Card>
+              </aside>
             </div>
           </Container>
         </>

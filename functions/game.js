@@ -57,7 +57,7 @@ exports.handler = async (event, context) => {
     url: 'https://api.igdb.com/v4/games',
     method: 'POST',
     headers: defaultHeaders,
-    data: `fields name, cover.*, first_release_date, summary, storyline, platforms.*, screenshots.*, aggregated_rating;where id = (${id});`,
+    data: `fields name, cover.*, first_release_date, summary, storyline, platforms.*, screenshots.*, aggregated_rating, franchises.*, collection.*, genres.*; where slug = "${id}";`,
   })
     .then((response) => ({
       statusCode: 200,

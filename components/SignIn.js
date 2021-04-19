@@ -1,5 +1,6 @@
 import { useAuth } from '../libs/Auth'
 import Head from 'next/head'
+import Card from './Card'
 
 const SignIn = () => {
   const { signInWithGoogle } = useAuth()
@@ -9,7 +10,7 @@ const SignIn = () => {
         <title>Sign in</title>
       </Head>
       <div className="max-w-md mx-auto px-4 py-5">
-        <div className="bg-gray-100 p-6 rounded-md shadow-md">
+        <Card>
           <button
             onClick={signInWithGoogle}
             className="text-sm border border-1 border-gray-400 hover:border-gray-600 py-2 px-2 rounded-md flex mx-auto items-center"
@@ -36,7 +37,7 @@ const SignIn = () => {
             </svg>
             Sign in with Google
           </button>
-        </div>
+        </Card>
       </div>
     </>
   )

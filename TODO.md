@@ -19,7 +19,12 @@
 - [ ] Search page
   - [ ] Pagination
 - [ ] Profile page
+  - [ ] Played list
+  - [ ] Top rated?
+  - [ ] "Want to play" list
+  - [ ] Log out
 - [ ] Game page
+- [ ] Franchise page
 - [ ] Add functionality
 
 ## Nice to have
