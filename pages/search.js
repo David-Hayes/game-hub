@@ -1,9 +1,9 @@
 import React, { useReducer } from 'react'
 import Wrapper from '../components/Wrapper'
 import Loading from '../components/Loading'
+import ResultItem from '../components/ResultItem'
 import { ep_search } from '../libs/Endpoints'
 import axios from 'axios'
-import Link from 'next/link'
 
 const Search = () => {
   const [localState, setLocalState] = useReducer(
@@ -83,35 +83,7 @@ const Search = () => {
             {localState.results.length > 0 ? (
               <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-5 gap-4">
                 {localState.results.map((game, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-900 text-white hover:opacity-80 relative"
-                  >
-                    <img
-                      src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${
-                        game.cover ? game.cover.image_id : `nocover_qhhlj6`
-                      }.jpg`}
-                      alt={game.name}
-                    />
-                    <div className="pt-2 px-3 pb-4">
-                      <p className="text-sm mb-2 leading-tight">{game.name}</p>
-                      {game.first_release_date ? (
-                        <p className="text-xs">
-                          (
-                          {new Date(
-                            game.first_release_date * 1000
-                          ).getFullYear()}
-                          )
-                        </p>
-                      ) : null}
-                    </div>
-                    <Link href={`/game/${game.slug}`}>
-                      <a
-                        className="absolute top-0 left-0 w-full h-full"
-                        title={game.name}
-                      ></a>
-                    </Link>
-                  </div>
+                  <ResultItem key={index} game={game} />
                 ))}
               </div>
             ) : (
