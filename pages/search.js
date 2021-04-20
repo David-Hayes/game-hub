@@ -13,6 +13,7 @@ const Search = () => {
       results: false,
       loading: false,
       limit: 25,
+      resultCount: 0,
       pages: 0,
       page: 1,
     }
@@ -38,6 +39,7 @@ const Search = () => {
         setLocalState({
           results: response.data,
           loading: false,
+          resultCount: parseInt(response.headers['x-count']),
           pages: Math.ceil(
             parseInt(response.headers['x-count']) / localState.limit
           ),
@@ -55,7 +57,7 @@ const Search = () => {
   const Pagination = () => {
     if (localState.pages > 1) {
       return (
-        <div className="text-center my-5">
+        <p className="text-center">
           Pages:{' '}
           {[...Array(localState.pages)].map((x, i) => (
             <button
@@ -68,7 +70,7 @@ const Search = () => {
               {i + 1}
             </button>
           ))}
-        </div>
+        </p>
       )
     } else {
       return null
@@ -112,13 +114,23 @@ const Search = () => {
           <>
             {localState.results.length > 0 ? (
               <>
-                <Pagination />
+                <div className="grid grid-cols-12 mb-5 text-sm">
+                  <div className="col-span-2">
+                    Total results: {localState.resultCount}
+                  </div>
+                  <div className="col-span-8">
+                    <Pagination />
+                  </div>
+                  <div className="col-span-2"></div>
+                </div>
                 <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-5 gap-4">
                   {localState.results.map((game, index) => (
                     <ResultItem key={index} game={game} />
                   ))}
                 </div>
-                <Pagination />
+                <div className="mt-5 text-sm">
+                  <Pagination />
+                </div>
               </>
             ) : (
               <>No results</>
