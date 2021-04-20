@@ -1,13 +1,13 @@
 # To do
 
 ## Must
-- [ ] Header
+- [x] Header
 - [ ] Footer
 - [x] Firebase config
   - [x] Firebase keys and envs
 - [x] Firebase auth
 - [x] Log in page
-- [ ] Log out flow
+- [x] Log out flow
 - [x] Firebase firestore for users
 - [ ] Loading icon
 - [ ] 404 page
@@ -16,8 +16,8 @@
   - [x] Token
   - [x] Search
   - [x] Game
-- [ ] Search page
-  - [ ] Pagination
+- [x] Search page
+  - [x] Pagination
 - [ ] Profile page
   - [ ] Played list
   - [ ] Top rated?
