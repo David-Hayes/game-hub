@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useAuth } from '../../libs/Auth'
+import { createPlayed, createWant } from '../../libs/Firestore'
 import { ep_game } from '../../libs/Endpoints'
 import Wrapper from '../../components/Wrapper'
 import Loading from '../../components/Loading'
@@ -10,6 +12,7 @@ import { H2 } from '../../components/Headings'
 import Card from '../../components/Card'
 
 const Game = () => {
+  const { user } = useAuth()
   const { query } = useRouter()
   const [game, setGame] = useState(false)
 
@@ -50,8 +53,6 @@ const Game = () => {
 
   const tableCellClasses = 'w-1/2 align-top py-2'
 
-  //console.log(game.summary.split('\n'))
-
   return (
     <Wrapper fullWidth={true}>
       {game ? (
@@ -80,8 +81,27 @@ const Game = () => {
                 </div>
                 <div className="text-white">
                   <h1 className="text-5xl font-semibold mb-2">{game.name}</h1>
-                  {game.first_release_date &&
-                    releaseDate(game.first_release_date)}
+                  {game.first_release_date && (
+                    <div>{releaseDate(game.first_release_date)}</div>
+                  )}
+                  <p>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        createPlayed(user.uid, { id: game.id, rating: 9 })
+                      }
+                    >
+                      Add to played
+                    </button>
+                  </p>
+                  <p>
+                    <button
+                      type="button"
+                      onClick={() => createWant(user.uid, { id: game.id })}
+                    >
+                      Add to want
+                    </button>
+                  </p>
                 </div>
               </div>
             </Container>
