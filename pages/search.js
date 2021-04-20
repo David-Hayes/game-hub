@@ -12,6 +12,9 @@ const Search = () => {
       query: '',
       results: false,
       loading: false,
+      limit: 25,
+      pages: 0,
+      page: 1,
     }
   )
 
@@ -20,14 +23,14 @@ const Search = () => {
     handleSearch()
   }
 
-  const handleSearch = (offset = 0, limit = 25) => {
+  const handleSearch = (offset = 0) => {
     setLocalState({ loading: true, results: false })
     axios({
       url: ep_search,
       method: 'POST',
       data: {
         query: localState.query,
-        limit,
+        limit: localState.limit,
         offset,
       },
     }).then((response) => {
@@ -35,6 +38,10 @@ const Search = () => {
         setLocalState({
           results: response.data,
           loading: false,
+          pages: Math.ceil(
+            parseInt(response.headers['x-count']) / localState.limit
+          ),
+          page: offset / localState.limit + 1,
         })
       } else {
         setLocalState({
@@ -43,6 +50,23 @@ const Search = () => {
         })
       }
     })
+  }
+
+  const Pagination = () => {
+    if (localState.pages > 1) {
+      return (
+        <div className="text-center">
+          Pages:{' '}
+          {[...Array(localState.pages)].map((x, i) => (
+            <button onClick={() => handleSearch(i * localState.limit)}>
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )
+    } else {
+      return null
+    }
   }
 
   return (
@@ -81,11 +105,15 @@ const Search = () => {
         {localState.results ? (
           <>
             {localState.results.length > 0 ? (
-              <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-5 gap-4">
-                {localState.results.map((game, index) => (
-                  <ResultItem key={index} game={game} />
-                ))}
-              </div>
+              <>
+                <Pagination />
+                <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-5 gap-4">
+                  {localState.results.map((game, index) => (
+                    <ResultItem key={index} game={game} />
+                  ))}
+                </div>
+                <Pagination />
+              </>
             ) : (
               <>No results</>
             )}
