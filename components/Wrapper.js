@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Header from './Header'
+import Footer from './Footer'
 import Container from './Container'
 import SignIn from './SignIn'
 import Loading from './Loading'
@@ -33,6 +34,7 @@ const Wrapper = ({ children, title, fullWidth = false, bunched = false }) => {
       ) : (
         <Loading />
       )}
+      <Footer />
     </>
   )
 }
