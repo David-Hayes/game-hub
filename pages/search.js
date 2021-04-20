@@ -55,10 +55,16 @@ const Search = () => {
   const Pagination = () => {
     if (localState.pages > 1) {
       return (
-        <div className="text-center">
+        <div className="text-center my-5">
           Pages:{' '}
           {[...Array(localState.pages)].map((x, i) => (
-            <button onClick={() => handleSearch(i * localState.limit)}>
+            <button
+              onClick={() => handleSearch(i * localState.limit)}
+              className={`mr-1 ${
+                i + 1 === localState.page ? `font-bold underline` : ``
+              }`}
+              key={i}
+            >
               {i + 1}
             </button>
           ))}
