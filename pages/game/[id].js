@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../libs/Auth'
@@ -151,7 +152,11 @@ const Game = () => {
                         <tr>
                           <td className={tableCellClasses}>Franchises</td>
                           <td className={tableCellClasses}>
-                            {game.collection.name}
+                            <Link href={`/franchises/${game.collection.slug}`}>
+                              <a className="text-yellow-700 hover:underline">
+                                {game.collection.name}
+                              </a>
+                            </Link>
                           </td>
                         </tr>
                       )}

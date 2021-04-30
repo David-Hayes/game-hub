@@ -38,6 +38,7 @@ const Header = () => {
                   src={user.photoUrl}
                   alt={user.name}
                   className="rounded-full w-7 ml-4"
+                  referrerPolicy="no-referrer"
                 />
               </a>
             </Link>
