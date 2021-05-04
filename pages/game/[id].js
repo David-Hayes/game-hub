@@ -4,21 +4,24 @@ import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../libs/Auth'
-import { createPlayed, createWant } from '../../libs/Firestore'
+import { createPlayed, createWant, getRating } from '../../libs/Firestore'
 import { ep_game } from '../../libs/Endpoints'
 import Wrapper from '../../components/Wrapper'
 import Loading from '../../components/Loading'
 import Container from '../../components/Container'
 import { H2 } from '../../components/Headings'
 import Card from '../../components/Card'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 const Game = () => {
   const { user } = useAuth()
   const { query } = useRouter()
   const [game, setGame] = useState(false)
+  const [rating, setRating] = useState(false)
 
   useEffect(() => {
-    if (query.id) {
+    if (query.id && user) {
       axios({
         url: ep_game,
         method: 'POST',
@@ -27,9 +30,12 @@ const Game = () => {
         },
       }).then((response) => {
         setGame(response.data)
+        getRating(user.uid, response.data.id).then((rating) => {
+          setRating(rating)
+        })
       })
     }
-  }, [query])
+  }, [query, user])
 
   const bgImage =
     game && game.screenshots
@@ -85,24 +91,40 @@ const Game = () => {
                   {game.first_release_date && (
                     <div>{releaseDate(game.first_release_date)}</div>
                   )}
-                  <p>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        createPlayed(user.uid, { id: game.id, rating: 9 })
-                      }
-                    >
-                      Add to played
-                    </button>
-                  </p>
-                  <p>
-                    <button
-                      type="button"
-                      onClick={() => createWant(user.uid, { id: game.id })}
-                    >
-                      Add to want
-                    </button>
-                  </p>
+                  {rating ? (
+                    <div className="w-20">
+                      <CircularProgressbar
+                        value={rating}
+                        maxValue={10}
+                        text={rating}
+                        styles={buildStyles({
+                          pathColor: '#f97316',
+                          textColor: '#f97316',
+                        })}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <p>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            createPlayed(user.uid, { id: game.id, rating: 9 })
+                          }
+                        >
+                          Add to played
+                        </button>
+                      </p>
+                      <p>
+                        <button
+                          type="button"
+                          onClick={() => createWant(user.uid, { id: game.id })}
+                        >
+                          Add to want
+                        </button>
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
             </Container>

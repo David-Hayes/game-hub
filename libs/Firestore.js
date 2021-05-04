@@ -27,6 +27,21 @@ export async function getPlayed(uid, sort = 'id') {
   return data
 }
 
+export async function getRating(uid, id) {
+  if (!uid || !id) return
+  return await firestore
+    .collection('users')
+    .doc(`${uid}/played/${id}`)
+    .get()
+    .then((snap) => {
+      if (snap.exists) {
+        return snap.data().rating
+      } else {
+        return false
+      }
+    })
+}
+
 export async function createPlayed(uid, data) {
   if (!uid || !data) return
   return await firestore

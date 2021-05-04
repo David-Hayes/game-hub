@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
   }
 
   return axios({
-    url: 'https://api.igdb.com/v4/franchises',
+    url: 'https://api.igdb.com/v4/collections',
     method: 'POST',
     headers: defaultHeaders,
     data: `fields name, games.name, games.slug, games.cover.*, games.first_release_date; where slug = "${id}";`,
