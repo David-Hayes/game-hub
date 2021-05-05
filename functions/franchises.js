@@ -42,7 +42,7 @@ exports.handler = async (event, context) => {
     }
   }
 
-  const { query: searchQuery, limit = 20, offset = 0 } = JSON.parse(event.body)
+  const { id: id } = JSON.parse(event.body)
 
   // set our headers for igdb
   const defaultHeaders = {
@@ -54,10 +54,10 @@ exports.handler = async (event, context) => {
   }
 
   return axios({
-    url: 'https://api.igdb.com/v4/games',
+    url: 'https://api.igdb.com/v4/collections',
     method: 'POST',
     headers: defaultHeaders,
-    data: `fields name, category, cover.*, first_release_date, slug; search "${searchQuery}"; where category = (0,3,8,9,11); limit ${limit}; offset ${offset};`,
+    data: `fields name, games.name, games.slug, games.cover.*, games.first_release_date; where slug = "${id}";`,
   })
     .then((response) => ({
       statusCode: 200,

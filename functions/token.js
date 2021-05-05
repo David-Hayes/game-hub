@@ -1,5 +1,5 @@
 const { default: axios } = require('axios')
-const { REACT_APP_IGDB_CLIENT, REACT_APP_IGDB_SECRET } = process.env
+const { IGDB_CLIENT, IGDB_SECRET } = process.env
 
 exports.handler = async (event, context) => {
   // check for get method
@@ -7,14 +7,13 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 405,
       headers: {
-        'x-reason': '1',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ error: 'Method not accepted' }),
     }
   }
 
-  // have we got a token? no point getting one if we have
+  // have we already got a token? no point getting one if we have!
   if (event.headers.cookie && event.headers.cookie.match('gDBT') !== null) {
     return {
       statusCode: 200,
@@ -26,8 +25,8 @@ exports.handler = async (event, context) => {
     url: 'https://id.twitch.tv/oauth2/token',
     method: 'POST',
     params: {
-      client_id: REACT_APP_IGDB_CLIENT,
-      client_secret: REACT_APP_IGDB_SECRET,
+      client_id: IGDB_CLIENT,
+      client_secret: IGDB_SECRET,
       grant_type: 'client_credentials',
     },
   })
@@ -50,7 +49,6 @@ exports.handler = async (event, context) => {
       headers: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/json',
-        'x-reason': '0',
       },
       body: JSON.stringify({ error: err }),
     }))

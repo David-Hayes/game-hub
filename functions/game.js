@@ -1,5 +1,5 @@
 const { default: axios } = require('axios')
-const { REACT_APP_IGDB_CLIENT } = process.env
+const { IGDB_CLIENT } = process.env
 
 exports.handler = async (event, context) => {
   // check for get method
@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 405,
       headers: {
-        'x-reason': '1',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ error: 'Method not accepted' }),
     }
@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 401,
       headers: {
-        'x-reason': '2',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         msg: 'No bearer token',
@@ -34,7 +34,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: {
-        'x-reason': '3',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         msg: 'No game ID',
@@ -47,7 +47,7 @@ exports.handler = async (event, context) => {
   // set our headers for igdb
   const defaultHeaders = {
     Accept: 'application/json',
-    'Client-ID': REACT_APP_IGDB_CLIENT,
+    'Client-ID': IGDB_CLIENT,
     Authorization: `Bearer ${
       event.headers.cookie.match(new RegExp('(^| )gDBT=([^;]+)'))[2]
     }`,
@@ -57,7 +57,7 @@ exports.handler = async (event, context) => {
     url: 'https://api.igdb.com/v4/games',
     method: 'POST',
     headers: defaultHeaders,
-    data: `fields name, cover.*, first_release_date, summary, platforms.*, screenshots.*;where id = (${id});`,
+    data: `fields name, cover.*, first_release_date, summary, storyline, platforms.*, screenshots.*, aggregated_rating, aggregated_rating_count, franchises.*, collection.*, genres.*; where slug = "${id}";`,
   })
     .then((response) => ({
       statusCode: 200,
@@ -70,7 +70,6 @@ exports.handler = async (event, context) => {
       statusCode: 400,
       headers: {
         'Content-Type': 'application/json',
-        'x-reason': '0',
       },
       body: JSON.stringify({
         error: err,
