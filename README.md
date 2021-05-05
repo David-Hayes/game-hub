@@ -1,34 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Game hub
 
-## Getting Started
+This is a work in progress!
 
-First, run the development server:
+Game hub is a personal project. For some reason I was thinking about all the different games I've played and how I would rate them, I then thought, why not make an application with a database to contain this information?
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The hub uses IGDB (Twitch) API for the the game information and a Firebase DB to store ratings.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technical
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Gamehub is a Next.js application and is designed to be hosted on Netlify.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Firebase is used for authentication and firestore for the database.
+## Scripts
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+This project has been developed using [Netlify's Dev Server](https://www.netlify.com/products/dev/).
 
-## Learn More
+Once you have the CLI installed you can run the following command which starts the react front end and lambda functions.
 
-To learn more about Next.js, take a look at the following resources:
+`netlify dev`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Environment variables
+To run Gamehub you'll need IGDB Api Client and Secret keys along with a Firebase web app.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+**.env**
 
-## Deploy on Vercel
+`IGDB_CLIENT`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`IGDB_SECRET`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**.env.local**
+
+`NEXT_PUBLIC_FIREBASE_APIKEY`
+
+`NEXT_PUBLIC_FIREBASE_AUTHDOMAIN`
+
+`NEXT_PUBLIC_FIREBASE_PROJECTID`
+
+`NEXT_PUBLIC_FIREBASE_APPID`
+
+## Contribution
+Contribution is welcome, please get in touch if you'd like to help the project.
