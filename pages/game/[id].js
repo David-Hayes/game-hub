@@ -19,6 +19,7 @@ import 'react-circular-progressbar/dist/styles.css'
 const Game = () => {
   const { user } = useAuth()
   const { query } = useRouter()
+  const [loading, setLoading] = useState(true)
   const [game, setGame] = useState(false)
   const [rating, setRating] = useState(false)
 
@@ -34,6 +35,7 @@ const Game = () => {
         setGame(response.data)
         getRating(user.uid, response.data.id).then((rating) => {
           setRating(rating)
+          setLoading(false)
         })
       })
     }
@@ -62,10 +64,15 @@ const Game = () => {
 
   const tableCellClasses = 'w-1/2 align-top py-2'
 
+  const setOwnerRating = (event) => {
+    setRating(event)
+    createPlayed(user.uid, { id: game.id, rating: event })
+  }
+
   return (
     <>
       <Wrapper fullWidth={true}>
-        {game ? (
+        {game && !loading ? (
           <>
             <Head>
               <title>{game.name}</title>
@@ -93,32 +100,6 @@ const Game = () => {
                     <h1 className="text-5xl font-semibold mb-2">{game.name}</h1>
                     {game.first_release_date && (
                       <div>{releaseDate(game.first_release_date)}</div>
-                    )}
-                    {rating ? (
-                      <></>
-                    ) : (
-                      <>
-                        <p>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              createPlayed(user.uid, { id: game.id, rating: 9 })
-                            }
-                          >
-                            Add to played
-                          </button>
-                        </p>
-                        <p>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              createWant(user.uid, { id: game.id })
-                            }
-                          >
-                            Add to want
-                          </button>
-                        </p>
-                      </>
                     )}
                   </div>
                 </div>
@@ -176,11 +157,17 @@ const Game = () => {
                         </p>
                       </div>
                     )}
-                    <p className="font-semibold mb-1">Rate this game</p>
-                    <Rating preSet={rating} />
+                    <p className="font-semibold mb-1">
+                      {!rating ? 'Rate this game' : 'Your rating'}
+                    </p>
+                    <Rating preSet={rating} onSetRating={setOwnerRating} />
                     {!rating && (
-                      <p className="mt-3">
-                        <Button variant="secondary" className="w-full">
+                      <p className="mt-5">
+                        <Button
+                          variant="secondary"
+                          className="w-full"
+                          onClick={() => createWant(user.uid, { id: game.id })}
+                        >
                           Add to want list
                         </Button>
                       </p>

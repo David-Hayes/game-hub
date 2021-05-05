@@ -28,6 +28,7 @@ export const Rating = ({ preSet = 0, onSetRating }) => {
 
   const applyRating = (newRating) => {
     setRating(newRating)
+    setTempRating(newRating)
     onSetRating(newRating)
   }
 
@@ -88,7 +89,8 @@ export const Rating = ({ preSet = 0, onSetRating }) => {
 
   return (
     <div className="flex">
-      {Stars()} <span className="ml-2">{descriptions[tempRating]}</span>
+      <div className="flex">{Stars()}</div>{' '}
+      <div className="ml-3">{descriptions[tempRating]}</div>
     </div>
   )
 }
