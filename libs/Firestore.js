@@ -54,8 +54,6 @@ export async function createWant(uid, data) {
   if (!data) return
   return await firestore
     .collection('users')
-    .doc(uid)
-    .collection('played')
-    .doc(data.id)
+    .doc(`${uid}/want/${data.id}`)
     .set({ ...data }, { merge: true })
 }
