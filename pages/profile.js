@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Wrapper from '../components/Wrapper'
-import { H1 } from '../components/Headings'
+import { H1, H2 } from '../components/Headings'
 import Button from '../components/Button'
+import ResultItem from '../components/ResultItem'
 import { useAuth } from '../libs/Auth'
 import { getPlayed } from '../libs/Firestore'
 import { ep_searchById } from '../libs/Endpoints'
@@ -14,7 +15,6 @@ const Profile = () => {
   useEffect(() => {
     if (user && user.uid) {
       getPlayed(user.uid, 'rating').then((a) => {
-        console.log(a.ids.join(','))
         axios({
           url: ep_searchById,
           method: 'POST',
@@ -22,7 +22,6 @@ const Profile = () => {
             id: a.ids.join(','),
           },
         }).then((response) => {
-          console.log(response)
           setPlayed(response.data)
         })
       })
@@ -47,7 +46,16 @@ const Profile = () => {
           <div className="md:col-span-5">
             <H1>{user.name}</H1>
 
-            {played && <></>}
+            {played && (
+              <>
+                <H2>Your games</H2>
+                <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-5 gap-4">
+                  {played.map((game, index) => (
+                    <ResultItem key={index} game={game} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

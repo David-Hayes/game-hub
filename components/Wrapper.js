@@ -32,7 +32,9 @@ const Wrapper = ({ children, title, fullWidth = false, bunched = false }) => {
           )}
         </>
       ) : (
-        <Loading />
+        <div className="my-5">
+          <Loading />
+        </div>
       )}
       <Footer />
     </>

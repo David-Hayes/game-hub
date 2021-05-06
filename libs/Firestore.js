@@ -10,7 +10,12 @@ export async function createUser(uid, data) {
 }
 
 // gets a list of played games
-export async function getPlayed(uid, sort = 'id') {
+export async function getPlayed(
+  uid,
+  sort = 'id',
+  limit = 100,
+  startAfter = ''
+) {
   if (!uid) return
   const data = { ratings: {}, ids: [] }
   await firestore
