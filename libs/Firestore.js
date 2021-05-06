@@ -1,6 +1,7 @@
 import firebase from './Firebase'
 const firestore = firebase.firestore()
 
+// creates user in firestore
 export async function createUser(uid, data) {
   return await firestore
     .collection('users')
@@ -8,6 +9,7 @@ export async function createUser(uid, data) {
     .set({ uid, ...data }, { merge: true })
 }
 
+// gets a list of played games
 export async function getPlayed(uid, sort = 'id') {
   if (!uid) return
   const data = { ratings: {}, ids: [] }
@@ -23,10 +25,19 @@ export async function getPlayed(uid, sort = 'id') {
         data.ids.push(doc.data().id)
       })
     })
-  console.log(data)
   return data
 }
 
+// adds game to played list
+export async function addPlayed(uid, data) {
+  if (!uid || !data) return
+  return await firestore
+    .collection('users')
+    .doc(`${uid}/played/${data.id}`)
+    .set({ ...data }, { merge: true })
+}
+
+// fetches rating for a game (if its been played)
 export async function getRating(uid, id) {
   if (!uid || !id) return
   return await firestore
@@ -42,18 +53,40 @@ export async function getRating(uid, id) {
     })
 }
 
-export async function createPlayed(uid, data) {
+// adds game to want list
+export async function addWanted(uid, data) {
   if (!uid || !data) return
   return await firestore
     .collection('users')
-    .doc(`${uid}/played/${data.id}`)
+    .doc(`${uid}/wanted/${data.id}`)
     .set({ ...data }, { merge: true })
 }
 
-export async function createWant(uid, data) {
-  if (!data) return
+export async function isWanted(uid, id) {
+  if (!uid || !id) return
   return await firestore
     .collection('users')
-    .doc(`${uid}/want/${data.id}`)
-    .set({ ...data }, { merge: true })
+    .doc(`${uid}/wanted/${id}`)
+    .get()
+    .then((snap) => {
+      if (snap.exists) {
+        return true
+      } else {
+        return false
+      }
+    })
+}
+
+export async function removeWanted(uid, id) {
+  if (!uid || !id) return
+  return await firestore
+    .collection('users')
+    .doc(`${uid}/wanted/${id}`)
+    .get()
+    .then((snap) => {
+      if (snap.exists) {
+        snap.ref.delete()
+        return true
+      }
+    })
 }

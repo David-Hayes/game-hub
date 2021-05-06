@@ -22,15 +22,18 @@ const Button = React.forwardRef(
 
     switch (variant) {
       case 'secondary':
-        styles.push('bg-blue-600 hover:bg-blue-700 text-white')
+        styles.push('')
         break
       case 'tertiary':
+        styles.push('')
+        break
+      case 'warning':
         styles.push(
-          'border border-yellow-600 hover:border-yellow-900 hover:bg-yellow-50'
+          'bg-red-600 hover:bg-red-700 text-white outline-none focus:outline-none'
         )
         break
       default:
-        styles.push('bg-yellow-600 hover:bg-yellow-700 text-white')
+        styles.push('bg-blue-600 hover:bg-blue-700 text-white')
     }
 
     if (className) {

@@ -4,7 +4,13 @@ import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useAuth } from '../../libs/Auth'
-import { createPlayed, createWant, getRating } from '../../libs/Firestore'
+import {
+  addPlayed,
+  addWanted,
+  getRating,
+  isWanted,
+  removeWanted,
+} from '../../libs/Firestore'
 import { ep_game } from '../../libs/Endpoints'
 import Wrapper from '../../components/Wrapper'
 import Loading from '../../components/Loading'
@@ -13,7 +19,7 @@ import { H2 } from '../../components/Headings'
 import Card from '../../components/Card'
 import Button from '../../components/Button'
 import Rating from '../../components/Rating'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
 const Game = () => {
@@ -22,6 +28,7 @@ const Game = () => {
   const [loading, setLoading] = useState(true)
   const [game, setGame] = useState(false)
   const [rating, setRating] = useState(false)
+  const [wanted, setWanted] = useState(false)
 
   useEffect(() => {
     if (query.id && user) {
@@ -34,8 +41,15 @@ const Game = () => {
       }).then((response) => {
         setGame(response.data)
         getRating(user.uid, response.data.id).then((rating) => {
-          setRating(rating)
-          setLoading(false)
+          if (rating) {
+            setRating(rating)
+            setLoading(false)
+          } else {
+            isWanted(user.uid, response.data.id).then((wanted) => {
+              setWanted(wanted)
+              setLoading(false)
+            })
+          }
         })
       })
     }
@@ -66,7 +80,17 @@ const Game = () => {
 
   const setOwnerRating = (event) => {
     setRating(event)
-    createPlayed(user.uid, { id: game.id, rating: event })
+    addPlayed(user.uid, { id: game.id, rating: event })
+  }
+
+  const wantedAddition = (id) => {
+    addWanted(user.uid, { id: id })
+    setWanted(true)
+  }
+
+  const wantedRemoval = (id) => {
+    removeWanted(user.uid, id)
+    setWanted(false)
   }
 
   return (
@@ -163,13 +187,22 @@ const Game = () => {
                     <Rating preSet={rating} onSetRating={setOwnerRating} />
                     {!rating && (
                       <p className="mt-5">
-                        <Button
-                          variant="secondary"
-                          className="w-full"
-                          onClick={() => createWant(user.uid, { id: game.id })}
-                        >
-                          Add to want list
-                        </Button>
+                        {wanted ? (
+                          <Button
+                            variant="warning"
+                            className="w-full"
+                            onClick={() => wantedRemoval(game.id)}
+                          >
+                            Remove from wanted list
+                          </Button>
+                        ) : (
+                          <Button
+                            className="w-full"
+                            onClick={() => wantedAddition(game.id)}
+                          >
+                            Add to wanted list
+                          </Button>
+                        )}
                       </p>
                     )}
                     <table className="table-fixed mt-5">
