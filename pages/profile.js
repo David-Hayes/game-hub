@@ -16,7 +16,6 @@ const Profile = () => {
   useEffect(() => {
     if (user && user.uid) {
       getPlayed(user.uid, 'rating').then((ids) => {
-        console.log(ids)
         axios({
           url: ep_searchById,
           method: 'POST',
@@ -24,7 +23,6 @@ const Profile = () => {
             id: ids.join(','),
           },
         }).then((response) => {
-          console.log(response.data)
           setPlayedData(response.data)
           setPlayed(ids)
         })
