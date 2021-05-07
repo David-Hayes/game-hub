@@ -27,18 +27,6 @@ const Profile = () => {
           setPlayed(ids)
         })
       })
-      /* getPlayed(user.uid, 'rating').then((a) => {
-        console.log(a)
-        axios({
-          url: ep_searchById,
-          method: 'POST',
-          data: {
-            id: a.ids.join(','),
-          },
-        }).then((response) => {
-          setPlayed(response.data)
-        })
-      }) */
     }
   }, [user])
 
