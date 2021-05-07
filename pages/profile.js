@@ -11,10 +11,26 @@ import axios from 'axios'
 const Profile = () => {
   const { user, signOut } = useAuth()
   const [played, setPlayed] = useState(false)
+  const [playedData, setPlayedData] = useState(false)
 
   useEffect(() => {
     if (user && user.uid) {
-      getPlayed(user.uid, 'rating').then((a) => {
+      getPlayed(user.uid, 'rating').then((ids) => {
+        console.log(ids)
+        axios({
+          url: ep_searchById,
+          method: 'POST',
+          data: {
+            id: ids.join(','),
+          },
+        }).then((response) => {
+          console.log(response.data)
+          setPlayedData(response.data)
+          setPlayed(ids)
+        })
+      })
+      /* getPlayed(user.uid, 'rating').then((a) => {
+        console.log(a)
         axios({
           url: ep_searchById,
           method: 'POST',
@@ -24,7 +40,7 @@ const Profile = () => {
         }).then((response) => {
           setPlayed(response.data)
         })
-      })
+      }) */
     }
   }, [user])
 
@@ -51,7 +67,7 @@ const Profile = () => {
                 <H2>Your games</H2>
                 <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-6 gap-4">
                   {played.map((game, index) => (
-                    <ResultItem key={index} game={game} />
+                    <ResultItem key={index} game={playedData[game]} />
                   ))}
                 </div>
               </>

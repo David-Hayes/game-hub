@@ -9,6 +9,15 @@ export async function createUser(uid, data) {
     .set({ uid, ...data }, { merge: true })
 }
 
+// add game to played list
+export async function addPlayed(uid, data) {
+  if (!uid || !data) return
+  return await firestore
+    .collection('users')
+    .doc(`${uid}/played/${data.id}`)
+    .set({ ...data }, { merge: true })
+}
+
 // gets a list of played games
 export async function getPlayed(
   uid,
@@ -17,31 +26,21 @@ export async function getPlayed(
   startAfter = ''
 ) {
   if (!uid) return
-  const data = { ratings: {}, ids: [] }
+  const data = []
   await firestore
     .collection('users')
-    .doc(uid)
+    .doc(`${uid}`)
     .collection('played')
-    //.orderBy(sort)
-    //.startAfter(startAfter)
-    //.limit(limit)
+    .orderBy('name')
+    .startAfter(startAfter)
+    .limit(100)
     .get()
     .then((snap) => {
       snap.docs.map((doc) => {
-        data.ratings[doc.data().id] = doc.data().rating
-        data.ids.push(doc.data().id)
+        data.push(doc.data().id)
       })
     })
   return data
-}
-
-// adds game to played list
-export async function addPlayed(uid, data) {
-  if (!uid || !data) return
-  return await firestore
-    .collection('users')
-    .doc(`${uid}/played/${data.id}`)
-    .set({ ...data }, { merge: true })
 }
 
 // fetches rating for a game (if its been played)

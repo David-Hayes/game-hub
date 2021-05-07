@@ -59,14 +59,21 @@ exports.handler = async (event, context) => {
     headers: defaultHeaders,
     data: `fields name, cover.*, first_release_date, slug; where id = (${id}); limit ${limit}; offset ${offset};`,
   })
-    .then((response) => ({
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-count': response.headers['x-count'],
-      },
-      body: JSON.stringify(response.data),
-    }))
+    .then((response) => {
+      console.log(response.data)
+      const data = {}
+      response.data.map((i) => {
+        data[i.id] = i
+      })
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-count': response.headers['x-count'],
+        },
+        body: JSON.stringify(data),
+      }
+    })
     .catch((err) => ({
       statusCode: 400,
       headers: {

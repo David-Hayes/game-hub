@@ -80,7 +80,7 @@ const Game = () => {
 
   const setOwnerRating = (event) => {
     setRating(event)
-    addPlayed(user.uid, { id: game.id, rating: event })
+    addPlayed(user.uid, { id: game.id, name: game.name, rating: event })
   }
 
   const wantedAddition = (id) => {
