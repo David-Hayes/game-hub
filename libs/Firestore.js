@@ -22,7 +22,9 @@ export async function getPlayed(
     .collection('users')
     .doc(uid)
     .collection('played')
-    .orderBy(sort)
+    //.orderBy(sort)
+    //.startAfter(startAfter)
+    //.limit(limit)
     .get()
     .then((snap) => {
       snap.docs.map((doc) => {

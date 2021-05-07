@@ -182,7 +182,9 @@ const Game = () => {
                       </div>
                     )}
                     <p className="font-semibold mb-1">
-                      {!rating ? 'Rate this game' : 'Your rating'}
+                      {!rating
+                        ? 'Played this game? Rate it to add to your list'
+                        : 'Your rating'}
                     </p>
                     <Rating preSet={rating} onSetRating={setOwnerRating} />
                     {!rating && (

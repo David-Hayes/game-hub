@@ -49,7 +49,7 @@ const Profile = () => {
             {played && (
               <>
                 <H2>Your games</H2>
-                <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-5 gap-4">
+                <div className="grid justify-items-stretch grid-cols-3 md:grid-cols-6 gap-4">
                   {played.map((game, index) => (
                     <ResultItem key={index} game={game} />
                   ))}
